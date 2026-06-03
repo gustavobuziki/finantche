@@ -13,6 +13,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 import { BadgeDollarSign } from "lucide-react";
+import { useTheme } from "next-themes";
 
 const currentMonth = new Date().getMonth();
 
@@ -34,6 +35,9 @@ const chartData = [
 const chartConfig = {} satisfies ChartConfig;
 
 export function ChartAnnual() {
+  const { theme } = useTheme();
+  const darkMode = theme === "dark";
+
   const average = Math.round(
     chartData.reduce((sum, item) => sum + item.desktop, 0) / chartData.length,
   );
@@ -43,16 +47,26 @@ export function ChartAnnual() {
       <div>
         <div className="flex flex-col border-b pb-4">
           <div className="flex items-center gap-2">
-            <BadgeDollarSign size={18} className="text-gray-300" />
-            <span className="text-gray-300 font-medium">Média</span>
+            <BadgeDollarSign
+              size={18}
+              className="text-gray-500 dark:text-gray-300"
+            />
+            <span className="text-gray-500 dark:text-gray-300 font-medium">
+              Média
+            </span>
           </div>
           <span className="text-xl font-semibold">R$ 3.240,00</span>
         </div>
 
         <div className="flex flex-col pt-4">
           <div className="flex items-center gap-2">
-            <BadgeDollarSign size={18} className="text-gray-300" />
-            <span className="text-gray-300 font-medium">Média</span>
+            <BadgeDollarSign
+              size={18}
+              className="text-gray-500 dark:text-gray-300"
+            />
+            <span className="text-gray-500 dark:text-gray-300 font-medium">
+              Média
+            </span>
           </div>
           <span className="text-xl font-semibold">R$ 3.240,00</span>
         </div>
@@ -72,7 +86,7 @@ export function ChartAnnual() {
             <ChartTooltip content={<ChartTooltipContent />} />
             <ReferenceLine
               y={average}
-              stroke="#FFFFFF"
+              stroke={darkMode ? "#FFFFFF" : "#000000"}
               strokeDasharray="4 4"
               strokeWidth={1.5}
             />
