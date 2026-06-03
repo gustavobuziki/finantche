@@ -16,7 +16,7 @@ export function ModalCreateExpense() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
+        <Button size="sm">
           <ListPlus size={16} />
           Adicionar
         </Button>

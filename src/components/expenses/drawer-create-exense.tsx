@@ -16,7 +16,7 @@ export function DrawerCreateExpense() {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button variant="outline" size="sm">
+        <Button size="sm">
           <ListPlus size={16} />
           Adicionar
         </Button>

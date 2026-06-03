@@ -4,9 +4,11 @@ import {
   CalendarFold,
   MoonIcon,
   Search,
+  Smile,
   SunIcon,
   TrendingUp,
 } from "lucide-react";
+import { useState } from "react";
 
 import Logo from "@/assets/logo-header.png";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -27,9 +29,8 @@ import {
 } from "@/components/ui/input-group";
 import { ModalCreateExpense } from "@/components/expenses/modal-create-exense";
 import { DrawerCreateExpense } from "@/components/expenses/drawer-create-exense";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { useState } from "react";
 import { ChartAnnual } from "@/components/expenses/chart-annual";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function Dashboard() {
   const darkMode = true;
@@ -39,9 +40,15 @@ export function Dashboard() {
 
   return (
     <div className="flex flex-col w-full gap-3">
-      <header className="flex flex-row items-center pl-4 pr-8">
-        <img src={Logo} alt="Logo" width={180} height={55} />
-        <div className="flex items-center gap-2 mt-2 ml-auto">
+      <header className="flex flex-row justify-between items-center pl-4 pr-8">
+        <div className="flex items-center gap-2">
+          <img src={Logo} alt="Logo" width={180} height={55} />
+          <div className="flex gap-1.5 items-center py-1 px-2 border border-input rounded-2xl mt-8">
+            <Smile size={16} className="text-gray-300" />
+            <span className="text-sm text-gray-300">Bem vindo, Gustavo.</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 mt-6">
           <Button variant="ghost">
             {darkMode ? <SunIcon size={16} /> : <MoonIcon size={16} />}
           </Button>
