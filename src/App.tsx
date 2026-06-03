@@ -1,20 +1,22 @@
+import { Toaster } from "sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+import { Dashboard } from "./screens/dashboard";
+import { useIsMobile } from "./hooks/use-mobile";
+
 import "./App.css";
-import { FormCategories } from "./components/categories/form-categories";
-import { FormExpenses } from "./components/expenses/form-expenses";
-import { FormRecurrences } from "./components/recurrences/form-recurrences";
 
 function App() {
   const queryClient = new QueryClient();
+  const isMobile = useIsMobile();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex w-full h-full items-center justify-center gap-4">
-        <FormCategories />
-        <FormRecurrences />
-        <FormExpenses />
-      </div>
+      <Dashboard />
+      <Toaster
+        theme="dark"
+        position={isMobile ? "top-center" : "bottom-right"}
+      />
     </QueryClientProvider>
   );
 }

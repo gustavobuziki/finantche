@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { DollarSign, TextIcon } from "lucide-react";
@@ -19,41 +19,26 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/utils/supabase";
 import { Switch } from "@/components/ui/switch";
 import { DatePicker } from "@/components/ui/date-picker";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCategories } from "@/services/categories";
 import { QUERY_KEYS } from "@/constants/query-keys";
+import { createExpense } from "@/services/expenses";
+import type { FormDataExpenses } from "@/types/expenses";
 
-type FormData = {
-  description: string;
-  amount: number;
-  date: string;
-  category_id?: string;
-  is_recurring: boolean;
-  recurrence_id?: string;
-};
+interface Props {
+  buttonClose?: ReactNode;
+}
 
-type Expenses = {
-  id: string;
-  description: string;
-  amount: number;
-  date: string;
-  category_id?: string;
-  is_recurring: boolean;
-  recurrence_id?: string;
-  user_id: string;
-  created_at: string;
-};
-
-export function FormExpenses() {
+export function FormExpenses({ buttonClose }: Props) {
   const {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<FormDataExpenses>({
     defaultValues: {
       is_recurring: false,
       date: new Date().toISOString(),
@@ -64,22 +49,11 @@ export function FormExpenses() {
     queryKey: [QUERY_KEYS.CATEGORIES],
   });
 
+  const queryClient = useQueryClient();
   const isRecurring = useWatch({ control, name: "is_recurring" });
   const [isLoading, setIsLoading] = useState(false);
 
-  const createExpense = async (values: FormData) => {
-    const { error, data } = await supabase
-      .from("expenses")
-      .insert(values)
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    return data as Expenses;
-  };
-
-  const onsubmit = async (data: FormData) => {
+  const onsubmit = async (data: FormDataExpenses) => {
     setIsLoading(true);
     const values = data;
 
@@ -90,6 +64,8 @@ export function FormExpenses() {
       toast.error("Erro ao criar despesa.");
     } finally {
       setIsLoading(false);
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.EXPENSES] });
+      reset();
     }
   };
 
@@ -100,9 +76,12 @@ export function FormExpenses() {
     }).format(value);
 
   return (
-    <form onSubmit={handleSubmit(onsubmit)}>
+    <form
+      onSubmit={handleSubmit(onsubmit)}
+      className="w-full sm:max-w-md px-4 md:p-0"
+    >
       <motion.div layout className="flex flex-col gap-3">
-        <Field data-invalid={!!errors.description} className="w-sm">
+        <Field data-invalid={!!errors.description}>
           <FieldLabel htmlFor="description">Descrição</FieldLabel>
           <InputGroup>
             <InputGroupInput
@@ -125,7 +104,7 @@ export function FormExpenses() {
             <FieldError>{errors.description.message}.</FieldError>
           )}
         </Field>
-        <Field data-invalid={!!errors.amount} className="w-sm">
+        <Field data-invalid={!!errors.amount}>
           <FieldLabel htmlFor="amount">Valor</FieldLabel>
           <Controller
             name="amount"
@@ -158,7 +137,7 @@ export function FormExpenses() {
           />
           {errors.amount && <FieldError>{errors.amount.message}.</FieldError>}
         </Field>
-        <Field data-invalid={!!errors.date} className="w-sm">
+        <Field data-invalid={!!errors.date}>
           <FieldLabel htmlFor="date">Data</FieldLabel>
           <Controller
             control={control}
@@ -176,7 +155,7 @@ export function FormExpenses() {
           />
           {errors.date && <FieldError>{errors.date.message}.</FieldError>}
         </Field>
-        <Field data-invalid={!!errors.category_id} className="w-sm">
+        <Field data-invalid={!!errors.category_id}>
           <FieldLabel htmlFor="category_id">Categoria</FieldLabel>
           <Controller
             control={control}
@@ -254,9 +233,12 @@ export function FormExpenses() {
           </Field>
         )}
 
-        <Button className="w-full mt-4" type="submit" isLoading={isLoading}>
-          Criar
-        </Button>
+        <div className="w-full mt-4 flex flex-col gap-2">
+          {buttonClose && buttonClose}
+          <Button type="submit" isLoading={isLoading}>
+            Criar
+          </Button>
+        </div>
       </motion.div>
     </form>
   );
