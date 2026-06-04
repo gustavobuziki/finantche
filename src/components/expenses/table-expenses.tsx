@@ -19,7 +19,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { getExpenses } from "@/services/expenses";
 import { QUERY_KEYS } from "@/constants/query-keys";
 import { getCategories } from "@/services/categories";
 import { Badge } from "../ui/badge";
@@ -40,20 +39,22 @@ import {
 import { DrawerCreateExpense } from "./drawer-create-exense";
 import { ModalCreateExpense } from "./modal-create-exense";
 import { useIsMobile } from "@/hooks/use-mobile";
+import type { Expenses } from "@/types/expenses";
 
-export function TableExpenses() {
-  const { data: expenses } = useQuery({
-    queryFn: getExpenses,
-    queryKey: [QUERY_KEYS.EXPENSES],
-  });
+interface Props {
+  expenses: Expenses[] | undefined;
+}
+
+export function TableExpenses({ expenses }: Props) {
+  const [searchValue, setSearchValue] = useState("");
+
+  const debouncedSearch = useDebouncedValue(searchValue, 300);
+  const isMobile = useIsMobile();
+
   const { data: categories } = useQuery({
     queryFn: getCategories,
     queryKey: [QUERY_KEYS.CATEGORIES],
   });
-
-  const [searchValue, setSearchValue] = useState("");
-  const debouncedSearch = useDebouncedValue(searchValue, 300);
-  const isMobile = useIsMobile();
 
   const renderCategory = (categoryId: string) => {
     const category = categories?.find((cat) => cat.id === categoryId);

@@ -6,8 +6,31 @@ import {
 } from "lucide-react";
 
 import { Card } from "../ui/card";
+import type { Expenses } from "@/types/expenses";
+import { currencyFormatter } from "@/utils/currency";
+import { useGlobalStore } from "@/store/global-store";
+import { useQuery } from "@tanstack/react-query";
+import { getBiggestExpenseByMonth } from "@/services/expenses";
+import { QUERY_KEYS } from "@/constants/query-keys";
 
-export function Buckets() {
+interface Props {
+  expenses: Expenses[] | undefined;
+}
+
+export function Buckets({ expenses }: Props) {
+  const { monthSelected, yearSelected } = useGlobalStore();
+
+  const { data: biggestExpense } = useQuery({
+    queryKey: [QUERY_KEYS.BIGGEST_EXPENSE, yearSelected, monthSelected],
+    queryFn: () => getBiggestExpenseByMonth(yearSelected, monthSelected),
+  });
+
+  const getMonthTotal = () => {
+    return expenses?.reduce((total, expense) => {
+      return total + Number(expense.amount);
+    }, 0);
+  };
+
   return (
     <div className="flex flex-col h-full gap-3">
       <div className="flex h-full gap-3 items-center">
@@ -21,9 +44,11 @@ export function Buckets() {
               Total do mês
             </span>
           </div>
-          <span className="text-xl font-semibold">R$ 3.240,00</span>
+          <span className="text-xl font-semibold">
+            {currencyFormatter(getMonthTotal() || 0)}
+          </span>
           <span className="text-gray-400 dark:text-gray-400">
-            18 despesas registradas
+            {expenses?.length || 0} despesas registradas
           </span>
         </Card>
         <Card className="w-2xs border border-input p-6 gap-2">
@@ -51,8 +76,12 @@ export function Buckets() {
               Maior gasto
             </span>
           </div>
-          <span className="text-xl font-semibold">Fin. Carro</span>
-          <span className="text-gray-400">R$ 1.200,00</span>
+          <span className="text-xl font-semibold">
+            {biggestExpense?.description || "Nenhuma despesa"}
+          </span>
+          <span className="text-gray-400">
+            {currencyFormatter(biggestExpense?.amount || 0)}
+          </span>
         </Card>
         <Card className="w-sm bg-primary/30 border border-primary p-6 gap-2">
           <div className="flex items-center gap-2">

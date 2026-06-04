@@ -35,3 +35,23 @@ export const getExpensesByMonth = async (year: number, month: number) => {
 
   return data as Expenses[];
 };
+
+export const getBiggestExpenseByMonth = async (year: number, month: number) => {
+  const { startDate, endDate } = getMonthRange(year, month);
+
+  const { data, error } = await supabase
+    .from("expenses")
+    .select("*")
+    .gte("date", startDate)
+    .lt("date", endDate)
+    .order("amount", { ascending: false })
+    .limit(1)
+    .single();
+
+  if (error) {
+    if (error.code === "PGRST116") return null;
+    throw error;
+  }
+
+  return data as Expenses;
+};

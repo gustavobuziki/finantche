@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useTheme } from "next-themes";
 import { MoonIcon, SunIcon } from "lucide-react";
 
@@ -16,23 +15,20 @@ import { Avatar, AvatarFallback } from "./avatar";
 
 import LogoDark from "@/assets/logo-dark-finantche.png";
 import LogoLight from "@/assets/logo-light-finantche.png";
+import { useGlobalStore } from "@/store/global-store";
 
 export function Header() {
   const { theme, setTheme } = useTheme();
   const darkMode = theme === "dark";
-
-  const currentMonth = new Date().toLocaleString("pt-BR", { month: "numeric" });
-  const [monthValue, setMonthValue] = useState(currentMonth);
-  const [yearValue, setYearValue] = useState(
-    new Date().getFullYear().toString(),
-  );
+  const { monthSelected, setMonthSelected, yearSelected, setYearSelected } =
+    useGlobalStore();
 
   const changeTheme = () => {
     setTheme(darkMode ? "light" : "dark");
   };
 
   return (
-    <header className="flex flex-row justify-between items-center">
+    <header className="flex flex-row justify-between items-center -mt-3">
       <img
         src={darkMode ? LogoDark : LogoLight}
         alt="Logo"
@@ -41,7 +37,10 @@ export function Header() {
       />
 
       <div className="flex gap-1 items-center ml-auto mr-4">
-        <Select value={monthValue} onValueChange={setMonthValue}>
+        <Select
+          value={monthSelected.toString()}
+          onValueChange={(value) => setMonthSelected(Number(value))}
+        >
           <SelectTrigger className="w-32">
             <SelectValue placeholder="Mês" />
           </SelectTrigger>
@@ -55,7 +54,10 @@ export function Header() {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Select value={yearValue} onValueChange={setYearValue}>
+        <Select
+          value={yearSelected.toString()}
+          onValueChange={(value) => setYearSelected(Number(value))}
+        >
           <SelectTrigger className="w-20">
             <SelectValue placeholder="Ano" />
           </SelectTrigger>
