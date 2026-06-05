@@ -6,8 +6,9 @@ import {
   Cell,
   ReferenceLine,
 } from "recharts";
-import { BadgeDollarSign } from "lucide-react";
+import { BadgeDollarSign, Goal } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useQuery } from "@tanstack/react-query";
 
 import {
   ChartContainer,
@@ -23,32 +24,74 @@ import {
   CardTitle,
 } from "../ui/card";
 
-const currentMonth = new Date().getMonth();
+import { getLast12MonthsExpensesTotal } from "@/services/expenses";
 
-const chartData = [
-  { month: "January", desktop: 1500 },
-  { month: "February", desktop: 3050 },
-  { month: "March", desktop: 1370 },
-  { month: "April", desktop: 730 },
-  { month: "May", desktop: 2090 },
-  { month: "June", desktop: 2140 },
-  { month: "July", desktop: 1989 },
-  { month: "August", desktop: 1760 },
-  { month: "September", desktop: 2340 },
-  { month: "October", desktop: 2100 },
-  { month: "November", desktop: 1890 },
-  { month: "December", desktop: 2200 },
-];
+import { useGlobalStore } from "@/store/global-store";
+
+import { QUERY_KEYS } from "@/constants/query-keys";
+
+import { currencyFormatter } from "@/utils/currency";
 
 const chartConfig = {} satisfies ChartConfig;
 
 export function ChartAnnual() {
   const { theme } = useTheme();
   const darkMode = theme === "dark";
+  const { dateSelected } = useGlobalStore();
 
-  const average = Math.round(
-    chartData.reduce((sum, item) => sum + item.desktop, 0) / chartData.length,
-  );
+  const { data: totalMonths } = useQuery({
+    queryFn: () => getLast12MonthsExpensesTotal(dateSelected),
+    queryKey: [QUERY_KEYS.LAST_12_MONTHS_EXPENSES_TOTAL, dateSelected],
+  });
+
+  const renderChartData = () => {
+    const months = Array.from({ length: 12 }, (_, index) => {
+      const date = new Date(
+        dateSelected.getFullYear(),
+        dateSelected.getMonth() - 11 + index,
+        1,
+      );
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+
+      return {
+        key,
+        month: date.toLocaleDateString("pt-BR", {
+          month: "short",
+          year: "numeric",
+        }),
+        total: 0,
+      };
+    });
+
+    totalMonths?.forEach((expense) => {
+      const date = new Date(expense.date);
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+
+      const month = months.find((item) => item.key === key);
+
+      if (month) {
+        month.total += Number(expense.amount);
+      }
+    });
+
+    return months.map(({ month, total }) => ({
+      month: month.charAt(0).toUpperCase() + month.slice(1),
+      total,
+    }));
+  };
+
+  const chartData = renderChartData();
+
+  const getAverageMonthlyExpense = () => {
+    const totalSpent = chartData.reduce((acc, month) => acc + month.total, 0);
+    const monthsWithExpenses = chartData.filter(
+      (month) => month.total > 0,
+    ).length;
+
+    if (monthsWithExpenses === 0) return 0;
+
+    return totalSpent / monthsWithExpenses;
+  };
 
   return (
     <Card className="flex-2 border border-input">
@@ -70,20 +113,19 @@ export function ChartAnnual() {
                 Média
               </span>
             </div>
-            <span className="text-xl font-semibold">R$ 3.240,00</span>
+            <span className="text-xl font-semibold">
+              {currencyFormatter(getAverageMonthlyExpense())}
+            </span>
           </div>
 
           <div className="flex flex-col pt-4">
             <div className="flex items-center gap-2">
-              <BadgeDollarSign
-                size={18}
-                className="text-gray-500 dark:text-gray-300"
-              />
+              <Goal size={18} className="text-gray-500 dark:text-gray-300" />
               <span className="text-gray-500 dark:text-gray-300 font-medium">
-                Média
+                Meta
               </span>
             </div>
-            <span className="text-xl font-semibold">R$ 3.240,00</span>
+            <span className="text-lg font-medium">Não definida</span>
           </div>
         </div>
 
@@ -100,16 +142,18 @@ export function ChartAnnual() {
               />
               <ChartTooltip content={<ChartTooltipContent />} />
               <ReferenceLine
-                y={average}
+                y={getAverageMonthlyExpense()}
                 stroke={darkMode ? "#FFFFFF" : "#000000"}
                 strokeDasharray="4 4"
                 strokeWidth={1.5}
               />
-              <Bar dataKey="desktop" radius={4}>
+              <Bar dataKey="total" radius={4}>
                 {chartData.map((_, index) => (
                   <Cell
                     key={index}
-                    fill={index === currentMonth ? "#3cac7d" : "#01662f"}
+                    fill={
+                      index === chartData.length - 1 ? "#3cac7d" : "#01662f"
+                    }
                   />
                 ))}
               </Bar>

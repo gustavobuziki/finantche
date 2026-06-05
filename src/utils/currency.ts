@@ -1,3 +1,5 @@
+import type { Expenses } from "@/types/expenses";
+
 export const currencyFormatter = (value: number) => {
   if (value === 0) return "R$ 0,00";
 
@@ -7,4 +9,12 @@ export const currencyFormatter = (value: number) => {
     style: "currency",
     currency: "BRL",
   }).format(value);
+};
+
+export const getExpensesTotal = (expenses: Expenses[] | undefined) => {
+  if (!expenses || expenses.length === 0) return 0;
+
+  return expenses?.reduce((total, expense) => {
+    return total + Number(expense.amount);
+  }, 0);
 };

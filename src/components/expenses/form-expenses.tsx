@@ -65,6 +65,16 @@ export function FormExpenses({ buttonClose }: Props) {
     } finally {
       setIsLoading(false);
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.EXPENSES] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.BIGGEST_EXPENSE] });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.TOTAL_EXPENSES_NEXT_MONTH],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.TOTAL_EXPENSES_PREVIOUS_MONTH],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.LAST_12_MONTHS_EXPENSES_TOTAL],
+      });
       reset();
     }
   };

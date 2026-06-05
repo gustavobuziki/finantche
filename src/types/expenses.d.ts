@@ -18,3 +18,8 @@ export type Expenses = {
   user_id: string;
   created_at: string;
 };
+
+export type ExpensesChart = {
+  date: string;
+  amount: number;
+};

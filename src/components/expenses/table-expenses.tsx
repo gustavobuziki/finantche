@@ -18,11 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-import { QUERY_KEYS } from "@/constants/query-keys";
-import { getCategories } from "@/services/categories";
 import { Badge } from "../ui/badge";
-import { useDebouncedValue } from "@/hooks/use-debounce";
 import {
   Card,
   CardAction,
@@ -38,7 +34,14 @@ import {
 } from "../ui/input-group";
 import { DrawerCreateExpense } from "./drawer-create-exense";
 import { ModalCreateExpense } from "./modal-create-exense";
+
+import { QUERY_KEYS } from "@/constants/query-keys";
+
+import { getCategories } from "@/services/categories";
+
+import { useDebouncedValue } from "@/hooks/use-debounce";
 import { useIsMobile } from "@/hooks/use-mobile";
+
 import type { Expenses } from "@/types/expenses";
 
 interface Props {
@@ -124,34 +127,46 @@ export function TableExpenses({ expenses }: Props) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filtered?.map((expense) => (
-              <TableRow key={expense.id}>
-                <TableCell width="40%">{expense.description}</TableCell>
-                <TableCell width="20%">{expense.amount}</TableCell>
-                <TableCell width="20%">
-                  {renderCategory(expense.category_id)}
-                </TableCell>
-                <TableCell width="10%">{expense.date}</TableCell>
-                <TableCell width="10%" className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="outline" size="icon" className="size-8">
-                        <MoreHorizontalIcon />
-                        <span className="sr-only">Open menu</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem>Edit</DropdownMenuItem>
-                      <DropdownMenuItem>Duplicate</DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem variant="destructive">
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+            {filtered?.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={5} className="text-center pt-6">
+                  Nenhuma despesa encontrada
                 </TableCell>
               </TableRow>
-            ))}
+            )}
+            {filtered?.length > 0 &&
+              filtered?.map((expense) => (
+                <TableRow key={expense.id}>
+                  <TableCell width="40%">{expense.description}</TableCell>
+                  <TableCell width="20%">{expense.amount}</TableCell>
+                  <TableCell width="20%">
+                    {renderCategory(expense.category_id)}
+                  </TableCell>
+                  <TableCell width="10%">{expense.date}</TableCell>
+                  <TableCell width="10%" className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="size-8"
+                        >
+                          <MoreHorizontalIcon />
+                          <span className="sr-only">Open menu</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                        <DropdownMenuItem>Duplicate</DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem variant="destructive">
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </CardContent>

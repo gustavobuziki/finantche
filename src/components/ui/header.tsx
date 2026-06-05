@@ -20,12 +20,14 @@ import { useGlobalStore } from "@/store/global-store";
 export function Header() {
   const { theme, setTheme } = useTheme();
   const darkMode = theme === "dark";
-  const { monthSelected, setMonthSelected, yearSelected, setYearSelected } =
-    useGlobalStore();
+  const { dateSelected, changeSelectedDate } = useGlobalStore();
 
   const changeTheme = () => {
     setTheme(darkMode ? "light" : "dark");
   };
+
+  const currentMonth = dateSelected.getMonth() + 1;
+  const currentYear = dateSelected.getFullYear();
 
   return (
     <header className="flex flex-row justify-between items-center -mt-3">
@@ -36,10 +38,12 @@ export function Header() {
         height="auto"
       />
 
-      <div className="flex gap-1 items-center ml-auto mr-4">
+      <div className="flex gap-1 items-center ml-auto mr-2">
         <Select
-          value={monthSelected.toString()}
-          onValueChange={(value) => setMonthSelected(Number(value))}
+          value={currentMonth.toString()}
+          onValueChange={(value) =>
+            changeSelectedDate(new Date(currentYear, Number(value) - 1, 1))
+          }
         >
           <SelectTrigger className="w-32">
             <SelectValue placeholder="Mês" />
@@ -55,8 +59,10 @@ export function Header() {
           </SelectContent>
         </Select>
         <Select
-          value={yearSelected.toString()}
-          onValueChange={(value) => setYearSelected(Number(value))}
+          value={currentYear.toString()}
+          onValueChange={(value) =>
+            changeSelectedDate(new Date(Number(value), currentMonth - 1, 1))
+          }
         >
           <SelectTrigger className="w-20">
             <SelectValue placeholder="Ano" />

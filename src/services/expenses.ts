@@ -1,5 +1,9 @@
-import type { Expenses, FormDataExpenses } from "@/types/expenses";
-import { getMonthRange } from "@/utils/date";
+import type {
+  Expenses,
+  ExpensesChart,
+  FormDataExpenses,
+} from "@/types/expenses";
+import { getDateLast12Months, getMonthRange } from "@/utils/date";
 import { supabase } from "@/utils/supabase";
 
 export const createExpense = async (values: FormDataExpenses) => {
@@ -14,16 +18,8 @@ export const createExpense = async (values: FormDataExpenses) => {
   return data as Expenses;
 };
 
-export const getExpenses = async () => {
-  const { error, data } = await supabase.from("expenses").select("*");
-
-  if (error) throw error;
-
-  return data as Expenses[];
-};
-
-export const getExpensesByMonth = async (year: number, month: number) => {
-  const { startDate, endDate } = getMonthRange(year, month);
+export const getExpensesByMonth = async (date: Date) => {
+  const { startDate, endDate } = getMonthRange(date);
 
   const { data, error } = await supabase
     .from("expenses")
@@ -36,8 +32,24 @@ export const getExpensesByMonth = async (year: number, month: number) => {
   return data as Expenses[];
 };
 
-export const getBiggestExpenseByMonth = async (year: number, month: number) => {
-  const { startDate, endDate } = getMonthRange(year, month);
+export const getExpensesTotalByMonth = async (date: Date) => {
+  const { startDate, endDate } = getMonthRange(date);
+
+  const { data, error } = await supabase
+    .from("expenses")
+    .select("amount")
+    .gte("date", startDate)
+    .lt("date", endDate);
+
+  if (error) throw error;
+
+  return data.reduce((total, expense) => {
+    return total + Number(expense.amount);
+  }, 0);
+};
+
+export const getBiggestExpenseByMonth = async (date: Date) => {
+  const { startDate, endDate } = getMonthRange(date);
 
   const { data, error } = await supabase
     .from("expenses")
@@ -54,4 +66,18 @@ export const getBiggestExpenseByMonth = async (year: number, month: number) => {
   }
 
   return data as Expenses;
+};
+
+export const getLast12MonthsExpensesTotal = async (date: Date) => {
+  const { startDate, endDate } = getDateLast12Months(date);
+
+  const { data, error } = await supabase
+    .from("expenses")
+    .select("amount, date")
+    .gte("date", startDate)
+    .lte("date", endDate);
+
+  if (error) throw error;
+
+  return data as ExpensesChart[];
 };
