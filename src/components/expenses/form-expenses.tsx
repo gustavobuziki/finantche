@@ -1,7 +1,10 @@
 import { useState, type ReactNode } from "react";
 import { toast } from "sonner";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { DollarSign, TextIcon } from "lucide-react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { motion } from "motion/react";
+
 import {
   Select,
   SelectContent,
@@ -10,8 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { motion } from "motion/react";
-
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import {
   InputGroup,
@@ -20,12 +21,14 @@ import {
 } from "@/components/ui/input-group";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { DatePicker } from "@/components/ui/date-picker";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getCategories } from "@/services/categories";
+
 import { QUERY_KEYS } from "@/constants/query-keys";
+
+import { getCategories } from "@/services/categories";
 import { createExpense } from "@/services/expenses";
-import type { FormDataExpenses } from "@/types/expenses";
+
+import type { ExpensesPayload, FormDataExpenses } from "@/types/expenses";
+import { MONTHS, YEARS } from "@/constants/dates";
 
 interface Props {
   buttonClose?: ReactNode;
@@ -40,8 +43,12 @@ export function FormExpenses({ buttonClose }: Props) {
     formState: { errors },
   } = useForm<FormDataExpenses>({
     defaultValues: {
+      description: "",
+      amount: 0,
+      month: new Date().getMonth() + 1,
+      year: new Date().getFullYear(),
+      category_id: undefined,
       is_recurring: false,
-      date: new Date().toISOString(),
     },
   });
   const { data: categories } = useQuery({
@@ -50,12 +57,17 @@ export function FormExpenses({ buttonClose }: Props) {
   });
 
   const queryClient = useQueryClient();
-  const isRecurring = useWatch({ control, name: "is_recurring" });
   const [isLoading, setIsLoading] = useState(false);
 
   const onsubmit = async (data: FormDataExpenses) => {
     setIsLoading(true);
-    const values = data;
+    const values: ExpensesPayload = {
+      description: data.description,
+      amount: data.amount,
+      date: new Date(data.year, data.month - 1).toISOString(),
+      category_id: data.category_id,
+      is_recurring: data.is_recurring,
+    };
 
     try {
       const expense = await createExpense(values);
@@ -147,24 +159,64 @@ export function FormExpenses({ buttonClose }: Props) {
           />
           {errors.amount && <FieldError>{errors.amount.message}.</FieldError>}
         </Field>
-        <Field data-invalid={!!errors.date}>
-          <FieldLabel htmlFor="date">Data</FieldLabel>
-          <Controller
-            control={control}
-            name="date"
-            rules={{ required: "Data é obrigatória" }}
-            render={({ field }) => (
-              <DatePicker
-                value={field.value ? new Date(field.value) : undefined}
-                onChange={(date) =>
-                  field.onChange(date ? date.toISOString() : "")
-                }
-                error={!!errors.date}
-              />
-            )}
-          />
-          {errors.date && <FieldError>{errors.date.message}.</FieldError>}
-        </Field>
+        <div className="flex gap-1 items-center">
+          <Field data-invalid={!!errors.month}>
+            <FieldLabel htmlFor="month">Mês</FieldLabel>
+            <Controller
+              control={control}
+              name="month"
+              rules={{ required: "Mês é obrigatório" }}
+              render={({ field }) => (
+                <Select
+                  value={field.value.toString()}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Mês" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {MONTHS.map((month) => (
+                        <SelectItem key={month.value} value={month.value}>
+                          {month.label}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.month && <FieldError>{errors.month.message}.</FieldError>}
+          </Field>
+          <Field data-invalid={!!errors.year}>
+            <FieldLabel htmlFor="year">Ano</FieldLabel>
+            <Controller
+              control={control}
+              name="year"
+              rules={{ required: "Ano é obrigatório" }}
+              render={({ field }) => (
+                <Select
+                  value={field.value.toString()}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Ano" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {YEARS.map((year) => (
+                        <SelectItem key={year.value} value={year.value}>
+                          {year.label}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.year && <FieldError>{errors.year.message}.</FieldError>}
+          </Field>
+        </div>
         <Field data-invalid={!!errors.category_id}>
           <FieldLabel htmlFor="category_id">Categoria</FieldLabel>
           <Controller
@@ -216,32 +268,6 @@ export function FormExpenses({ buttonClose }: Props) {
             <FieldError>{errors.is_recurring.message}.</FieldError>
           )}
         </Field>
-        {isRecurring && (
-          <Field data-invalid={!!errors.recurrence_id} className="mt-1 w-full">
-            <FieldLabel htmlFor="recurrence_id">Tipo de recorrência</FieldLabel>
-            <Controller
-              control={control}
-              name="recurrence_id"
-              render={({ field }) => (
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="light">Light</SelectItem>
-                      <SelectItem value="dark">Dark</SelectItem>
-                      <SelectItem value="system">System</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              )}
-            />
-            {errors.recurrence_id && (
-              <FieldError>{errors.recurrence_id.message}.</FieldError>
-            )}
-          </Field>
-        )}
 
         <div className="w-full mt-4 flex flex-col gap-2">
           {buttonClose && buttonClose}

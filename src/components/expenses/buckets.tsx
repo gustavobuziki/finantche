@@ -119,7 +119,7 @@ export function Buckets({ expenses }: Props) {
               <span className="text-xl font-semibold text-red-400">
                 +{getMonthComparison.percentage.toFixed(2)}%
               </span>
-              <span className="text-red-400">{`${monthDifferenceIncrease} a mais que ${previousMonthLabel}`}</span>
+              <span className="flex-1 text-red-400 truncate">{`${monthDifferenceIncrease} a mais que ${previousMonthLabel}`}</span>
             </>
           )}
           {getMonthComparison.type === "decrease" && (
@@ -127,7 +127,7 @@ export function Buckets({ expenses }: Props) {
               <span className="text-xl font-semibold text-green-500">
                 {getMonthComparison.percentage.toFixed(2)}%
               </span>
-              <span className="text-green-500">{`${monthDifferenceDecrease} a menos que ${previousMonthLabel}`}</span>
+              <span className="flex-1 text-green-500 truncate">{`${monthDifferenceDecrease} a menos que ${previousMonthLabel}`}</span>
             </>
           )}
           {getMonthComparison.type === "neutral" && (
@@ -151,7 +151,7 @@ export function Buckets({ expenses }: Props) {
               Maior gasto
             </span>
           </div>
-          <span className="text-xl font-semibold">
+          <span className="flex-1 text-xl font-semibold truncate">
             {biggestExpense?.description || "Nenhuma despesa"}
           </span>
           <span className="text-gray-400">

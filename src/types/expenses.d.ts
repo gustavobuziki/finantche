@@ -1,10 +1,19 @@
 export type FormDataExpenses = {
   description: string;
   amount: number;
-  date: string;
+  month: number;
+  year: number;
   category_id?: string;
   is_recurring: boolean;
   recurrence_id?: string;
+};
+
+export type ExpensesPayload = {
+  description: string;
+  amount: number;
+  date: string;
+  category_id?: string;
+  is_recurring: boolean;
 };
 
 export type Expenses = {

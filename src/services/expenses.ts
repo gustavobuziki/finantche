@@ -1,12 +1,12 @@
 import type {
   Expenses,
   ExpensesChart,
-  FormDataExpenses,
+  ExpensesPayload,
 } from "@/types/expenses";
 import { getDateLast12Months, getMonthRange } from "@/utils/date";
 import { supabase } from "@/utils/supabase";
 
-export const createExpense = async (values: FormDataExpenses) => {
+export const createExpense = async (values: ExpensesPayload) => {
   const { error, data } = await supabase
     .from("expenses")
     .insert(values)

@@ -27,14 +27,11 @@ export const getNextMonth = (date: Date) => {
 };
 
 export const getDateLast12Months = (date: Date) => {
-  const last12MonthsDate = new Date(
-    date.getFullYear(),
-    date.getMonth() - 11,
-    1,
-  );
+  const initialDate = new Date(date.getFullYear(), date.getMonth() - 11, 1);
+  const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
   return {
-    startDate: last12MonthsDate.toISOString().split("T")[0],
-    endDate: date.toISOString().split("T")[0],
+    startDate: initialDate.toISOString().split("T")[0],
+    endDate: endDate.toISOString().split("T")[0],
   };
 };
