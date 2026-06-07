@@ -1,5 +1,6 @@
 import { useTheme } from "next-themes";
 import { MoonIcon, SquareArrowRightExit, SunIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import {
   Select,
@@ -22,11 +23,18 @@ import LogoDark from "@/assets/logo-dark-finantche.png";
 import LogoLight from "@/assets/logo-light-finantche.png";
 import { useGlobalStore } from "@/store/global-store";
 import { ModalCategories } from "../categories/modal-create-category";
+import { postLogout } from "@/services/auth";
+import { useAuthStore } from "@/store/auth-store";
+import { useState } from "react";
 
 export function Header() {
   const { theme, setTheme } = useTheme();
   const darkMode = theme === "dark";
   const { dateSelected, changeSelectedDate } = useGlobalStore();
+  const { setSession } = useAuthStore();
+  const navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const changeTheme = () => {
     setTheme(darkMode ? "light" : "dark");
@@ -34,6 +42,18 @@ export function Header() {
 
   const currentMonth = dateSelected.getMonth() + 1;
   const currentYear = dateSelected.getFullYear();
+
+  const handleLogout = async () => {
+    setIsLoading(true);
+
+    try {
+      await postLogout();
+      setSession(null);
+      navigate("/login");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <header className="flex flex-row justify-between items-center -mt-3">
@@ -105,7 +125,12 @@ export function Header() {
               </div>
               <div className="flex flex-col gap-1">
                 <ModalCategories />
-                <Button size="sm" variant="outline">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={handleLogout}
+                  isLoading={isLoading}
+                >
                   <SquareArrowRightExit size={14} />
                   Logout
                 </Button>
