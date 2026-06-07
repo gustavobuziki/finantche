@@ -1,5 +1,5 @@
 import { useTheme } from "next-themes";
-import { MoonIcon, SunIcon } from "lucide-react";
+import { MoonIcon, SquareArrowRightExit, SunIcon } from "lucide-react";
 
 import {
   Select,
@@ -9,6 +9,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { MONTHS, YEARS } from "@/constants/dates";
 import { Button } from "./button";
 import { Avatar, AvatarFallback } from "./avatar";
@@ -16,6 +21,7 @@ import { Avatar, AvatarFallback } from "./avatar";
 import LogoDark from "@/assets/logo-dark-finantche.png";
 import LogoLight from "@/assets/logo-light-finantche.png";
 import { useGlobalStore } from "@/store/global-store";
+import { ModalCategories } from "../categories/modal-create-category";
 
 export function Header() {
   const { theme, setTheme } = useTheme();
@@ -83,9 +89,30 @@ export function Header() {
           {darkMode ? <SunIcon size={16} /> : <MoonIcon size={16} />}
         </Button>
         <div className="flex flex-row gap-2">
-          <Avatar size="lg">
-            <AvatarFallback>GB</AvatarFallback>
-          </Avatar>
+          <Popover>
+            <PopoverTrigger asChild className="cursor-pointer">
+              <Avatar size="lg">
+                <AvatarFallback>GB</AvatarFallback>
+              </Avatar>
+            </PopoverTrigger>
+            <PopoverContent>
+              <div className="flex flex-col items-center">
+                <Avatar className="w-16 h-16 mb-2">
+                  <AvatarFallback className="text-xl">GB</AvatarFallback>
+                </Avatar>
+                <span className="text-sm font-medium">Gustavo Buziki</span>
+                <span className="text-xs text-gray-400">gbuziki@gmail.com</span>
+              </div>
+              <div className="flex flex-col gap-1">
+                <ModalCategories />
+                <Button size="sm" variant="outline">
+                  <SquareArrowRightExit size={14} />
+                  Logout
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
+
           <div className="flex flex-col gap-0">
             <span className="text-sm font-medium">Gustavo Buziki</span>
             <span className="text-xs text-gray-400">gbuziki@gmail.com</span>

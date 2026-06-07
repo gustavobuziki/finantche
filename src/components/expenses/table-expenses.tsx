@@ -32,8 +32,8 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "../ui/input-group";
-import { DrawerCreateExpense } from "./drawer-create-exense";
-import { ModalCreateExpense } from "./modal-create-exense";
+import { DrawerCreateExpense } from "./drawer-create-expense";
+import { ModalCreateExpense } from "./modal-create-expense";
 
 import { QUERY_KEYS } from "@/constants/query-keys";
 

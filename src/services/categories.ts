@@ -20,3 +20,16 @@ export const getCategories = async () => {
 
   return data as Category[];
 };
+
+export const deleteCategory = async (id: string) => {
+  const { error, data } = await supabase
+    .from("categories")
+    .delete()
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) throw error;
+
+  return data as Category;
+};
