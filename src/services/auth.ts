@@ -26,7 +26,7 @@ export const postLogin = async (email: string, password: string) => {
     password,
   });
 
-  if (error) throw error;
+  if (error) throw error; 
 
   return data;
 };

@@ -17,6 +17,7 @@ import LogoDark from "@/assets/logo-dark-finantche.png";
 import LogoLight from "@/assets/logo-light-finantche.png";
 import { Button } from "@/components/ui/button";
 import { postLogin } from "@/services/auth";
+import { AuthError } from "@supabase/supabase-js";
 
 type FormData = {
   email: string;
@@ -46,10 +47,12 @@ export function Login() {
       await postLogin(data.email, data.password);
       window.location.reload();
     } catch (error) {
-      if (error?.code === "invalid_credentials") {
+      const authError = error as AuthError;
+
+      if (authError?.code === "invalid_credentials") {
         toast.error("Credenciais inválidas");
       }
-      if (error?.code === "email_not_confirmed") {
+      if (authError?.code === "email_not_confirmed") {
         toast.error("E-mail não confirmado. Verifique sua caixa de entrada.");
       }
     } finally {

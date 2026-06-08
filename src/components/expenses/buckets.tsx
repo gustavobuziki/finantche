@@ -49,7 +49,7 @@ export function Buckets({ expenses }: Props) {
   });
 
   const getPreviousMonthComparison = () => {
-    const previousTotal = totalExpensesPreviousMonth;
+    const previousTotal = totalExpensesPreviousMonth || 0;
     const currentTotal = getExpensesTotal(expenses) || 0;
 
     if (previousTotal === 0) {
@@ -78,7 +78,7 @@ export function Buckets({ expenses }: Props) {
   const nextMonthTotal = getExpensesTotal(expensesNextMonth);
   const nextMonthLabel = MONTHS[nextMonth.getMonth()].label;
   const monthDifferenceIncrease = currencyFormatter(
-    getMonthComparison.currentTotal - getMonthComparison.previousTotal,
+    getMonthComparison?.currentTotal - getMonthComparison?.previousTotal,
   );
   const monthDifferenceDecrease = currencyFormatter(
     getMonthComparison.previousTotal - getMonthComparison.currentTotal,

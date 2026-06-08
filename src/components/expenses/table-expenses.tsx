@@ -59,7 +59,11 @@ export function TableExpenses({ expenses }: Props) {
     queryKey: [QUERY_KEYS.CATEGORIES],
   });
 
-  const renderCategory = (categoryId: string) => {
+  const renderCategory = (categoryId?: string) => {
+    if (!categoryId) {
+      return <Badge>Sem categoria</Badge>;
+    }
+
     const category = categories?.find((cat) => cat.id === categoryId);
 
     if (!category) {
