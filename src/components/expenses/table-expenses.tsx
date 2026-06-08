@@ -138,8 +138,9 @@ export function TableExpenses({ expenses }: Props) {
                 </TableCell>
               </TableRow>
             )}
-            {filtered?.length > 0 &&
-              filtered?.map((expense) => (
+            {filtered &&
+              filtered.length > 0 &&
+              filtered.map((expense) => (
                 <TableRow key={expense.id}>
                   <TableCell width="40%">{expense.description}</TableCell>
                   <TableCell width="20%">{expense.amount}</TableCell>
