@@ -61,10 +61,11 @@ export function FormExpenses({ buttonClose }: Props) {
 
   const onsubmit = async (data: FormDataExpenses) => {
     setIsLoading(true);
+
     const values: ExpensesPayload = {
       description: data.description,
       amount: data.amount,
-      date: new Date(data.year, data.month - 1).toISOString(),
+      date: new Date(data.year, data.month).toISOString(),
       category_id: data.category_id,
       is_recurring: data.is_recurring,
     };
