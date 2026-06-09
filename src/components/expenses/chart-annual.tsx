@@ -54,7 +54,6 @@ export function ChartAnnual() {
     const months = Array.from({ length: 12 }, (_, index) => {
       const date = new Date(year, month - 1 - 11 + index, 1);
       const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
-      console.log("Gerando mês para chave:", key);
 
       return {
         key,

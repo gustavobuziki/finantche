@@ -4,9 +4,11 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "@/store/auth-store";
 
 import LogoDark from "@/assets/logo-dark-finantche.png";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const PublicRoute = () => {
   const { session, isLoadingAuth } = useAuthStore();
+  const isMobile = useIsMobile();
 
   if (isLoadingAuth) {
     return (
@@ -21,15 +23,9 @@ export const PublicRoute = () => {
   }
 
   return (
-    <div className="flex w-full h-full bg-[url('./assets/background-image.png')] bg-cover items-center justify-evenly">
+    <div className="w-full h-full bg-[url('./assets/background-image.png')] bg-cover flex flex-col items-center justify-center gap-8 px-4 lg:flex-row-reverse lg:justify-evenly">
+      <img src={LogoDark} alt="Logo" width={isMobile ? 250 : 350} />
       <Outlet />
-      <div className="flex flex-col gap-2 items-center">
-        <img src={LogoDark} alt="Logo" width={350} />
-        <span className="text-gray-400 text-sm flex text-center">
-          Controle seus gastos mensais e <br /> tenha uma visão clara de suas
-          finanças.
-        </span>
-      </div>
     </div>
   );
 };

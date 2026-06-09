@@ -10,18 +10,22 @@ import { Card } from "../ui/card";
 
 import type { Expenses } from "@/types/expenses";
 
-import { currencyFormatter, getExpensesTotal } from "@/utils/currency";
+import {
+  currencyFormatter,
+  getExpensesRecurrencesTotal,
+  getExpensesTotal,
+} from "@/utils/currency";
 import { getNextMonth, getPreviousMonth } from "@/utils/date";
 
 import {
   getBiggestExpenseByMonth,
-  getExpensesByMonth,
   getExpensesTotalByMonth,
 } from "@/services/expenses";
 
 import { QUERY_KEYS } from "@/constants/query-keys";
 import { MONTHS } from "@/constants/dates";
 import { usePeriod } from "@/hooks/use-period";
+import { getRecurrences } from "@/services/recurrences";
 
 interface Props {
   expenses: Expenses[] | undefined;
@@ -41,10 +45,9 @@ export function Buckets({ expenses }: Props) {
     queryFn: () => getExpensesTotalByMonth(previousMonth),
   });
 
-  const nextMonth = getNextMonth(period);
-  const { data: expensesNextMonth } = useQuery({
-    queryKey: [QUERY_KEYS.EXPENSES, nextMonth],
-    queryFn: () => getExpensesByMonth(nextMonth),
+  const { data: expensesRecurrences } = useQuery({
+    queryKey: [QUERY_KEYS.RECURRENCES],
+    queryFn: getRecurrences,
   });
 
   const getPreviousMonthComparison = () => {
@@ -75,7 +78,8 @@ export function Buckets({ expenses }: Props) {
   const previousMonthLabel =
     MONTHS[Number(previousMonth.split("-")[1]) - 1].label;
   const currentMonthTotal = getExpensesTotal(expenses);
-  const nextMonthTotal = getExpensesTotal(expensesNextMonth);
+  const nextMonth = getNextMonth(period);
+  const nextMonthTotal = getExpensesRecurrencesTotal(expensesRecurrences);
   const nextMonthLabel = MONTHS[Number(nextMonth.split("-")[1]) - 1].label;
   const monthDifferenceIncrease = currencyFormatter(
     getMonthComparison?.currentTotal - getMonthComparison?.previousTotal,
@@ -172,7 +176,7 @@ export function Buckets({ expenses }: Props) {
             {currencyFormatter(nextMonthTotal)}
           </span>
           <span className="text-gray-400">
-            {expensesNextMonth?.length || 0} despesas registradas
+            {expensesRecurrences?.length || 0} despesas recorrentes
           </span>
         </Card>
       </div>

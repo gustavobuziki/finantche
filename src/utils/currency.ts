@@ -1,4 +1,5 @@
 import type { Expenses } from "@/types/expenses";
+import type { Recurrence } from "@/types/recurrences";
 
 export const currencyFormatter = (value: number) => {
   if (value === 0) return "R$ 0,00";
@@ -12,6 +13,16 @@ export const currencyFormatter = (value: number) => {
 };
 
 export const getExpensesTotal = (expenses: Expenses[] | undefined) => {
+  if (!expenses || expenses.length === 0) return 0;
+
+  return expenses?.reduce((total, expense) => {
+    return total + Number(expense.amount);
+  }, 0);
+};
+
+export const getExpensesRecurrencesTotal = (
+  expenses: Recurrence[] | undefined,
+) => {
   if (!expenses || expenses.length === 0) return 0;
 
   return expenses?.reduce((total, expense) => {

@@ -64,7 +64,7 @@ export function Login() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <motion.div layout className="w-full">
-        <Card className="px-6">
+        <Card className="px-6 sm:w-md">
           <div>
             <h2 className="text-2xl font-semibold">Login</h2>
             <span className="text-gray-400">
@@ -72,7 +72,7 @@ export function Login() {
             </span>
           </div>
           <div className="flex flex-col gap-4">
-            <Field data-invalid={false} className="w-md">
+            <Field data-invalid={false}>
               <FieldLabel htmlFor="email">E-mail</FieldLabel>
               <InputGroup>
                 <InputGroupInput
@@ -89,7 +89,7 @@ export function Login() {
               </InputGroup>
               {errors.email && <FieldError>{errors.email.message}.</FieldError>}
             </Field>
-            <Field data-invalid={false} className="w-md">
+            <Field data-invalid={false}>
               <FieldLabel htmlFor="password">Senha</FieldLabel>
               <InputGroup>
                 <InputGroupInput
