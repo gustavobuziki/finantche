@@ -13,8 +13,6 @@ import type { Expenses } from "@/types/expenses";
 import { currencyFormatter, getExpensesTotal } from "@/utils/currency";
 import { getNextMonth, getPreviousMonth } from "@/utils/date";
 
-import { useGlobalStore } from "@/store/global-store";
-
 import {
   getBiggestExpenseByMonth,
   getExpensesByMonth,
@@ -23,26 +21,27 @@ import {
 
 import { QUERY_KEYS } from "@/constants/query-keys";
 import { MONTHS } from "@/constants/dates";
+import { usePeriod } from "@/hooks/use-period";
 
 interface Props {
   expenses: Expenses[] | undefined;
 }
 
 export function Buckets({ expenses }: Props) {
-  const { dateSelected } = useGlobalStore();
+  const { period } = usePeriod();
 
   const { data: biggestExpense } = useQuery({
-    queryKey: [QUERY_KEYS.BIGGEST_EXPENSE, dateSelected],
-    queryFn: () => getBiggestExpenseByMonth(dateSelected),
+    queryKey: [QUERY_KEYS.BIGGEST_EXPENSE, period],
+    queryFn: () => getBiggestExpenseByMonth(period),
   });
 
-  const previousMonth = getPreviousMonth(dateSelected);
+  const previousMonth = getPreviousMonth(period);
   const { data: totalExpensesPreviousMonth } = useQuery({
     queryKey: [QUERY_KEYS.TOTAL_EXPENSES_PREVIOUS_MONTH, previousMonth],
     queryFn: () => getExpensesTotalByMonth(previousMonth),
   });
 
-  const nextMonth = getNextMonth(dateSelected);
+  const nextMonth = getNextMonth(period);
   const { data: expensesNextMonth } = useQuery({
     queryKey: [QUERY_KEYS.EXPENSES, nextMonth],
     queryFn: () => getExpensesByMonth(nextMonth),
@@ -73,10 +72,11 @@ export function Buckets({ expenses }: Props) {
   };
 
   const getMonthComparison = getPreviousMonthComparison();
-  const previousMonthLabel = MONTHS[previousMonth.getMonth()].label;
+  const previousMonthLabel =
+    MONTHS[Number(previousMonth.split("-")[1]) - 1].label;
   const currentMonthTotal = getExpensesTotal(expenses);
   const nextMonthTotal = getExpensesTotal(expensesNextMonth);
-  const nextMonthLabel = MONTHS[nextMonth.getMonth()].label;
+  const nextMonthLabel = MONTHS[Number(nextMonth.split("-")[1]) - 1].label;
   const monthDifferenceIncrease = currencyFormatter(
     getMonthComparison?.currentTotal - getMonthComparison?.previousTotal,
   );

@@ -26,11 +26,10 @@ import {
 
 import { getLast12MonthsExpensesTotal } from "@/services/expenses";
 
-import { useGlobalStore } from "@/store/global-store";
-
 import { QUERY_KEYS } from "@/constants/query-keys";
 
 import { currencyFormatter } from "@/utils/currency";
+import { usePeriod } from "@/hooks/use-period";
 
 const chartConfig = {} satisfies ChartConfig;
 
@@ -38,11 +37,11 @@ export function ChartAnnual() {
   const { theme, systemTheme } = useTheme();
   const darkMode =
     theme === "dark" || (theme === "system" && systemTheme === "dark");
-  const { dateSelected } = useGlobalStore();
+  const { period, year, month } = usePeriod();
 
   const { data: totalMonths } = useQuery({
-    queryFn: () => getLast12MonthsExpensesTotal(dateSelected),
-    queryKey: [QUERY_KEYS.LAST_12_MONTHS_EXPENSES_TOTAL, dateSelected],
+    queryFn: () => getLast12MonthsExpensesTotal(period),
+    queryKey: [QUERY_KEYS.LAST_12_MONTHS_EXPENSES_TOTAL, period],
   });
 
   const getYearMonthKey = (dateString: string) => {
@@ -53,11 +52,7 @@ export function ChartAnnual() {
 
   const renderChartData = () => {
     const months = Array.from({ length: 12 }, (_, index) => {
-      const date = new Date(
-        dateSelected.getFullYear(),
-        dateSelected.getMonth() - 11 + index,
-        1,
-      );
+      const date = new Date(year, month - 1 - 11 + index, 1);
       const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
       console.log("Gerando mês para chave:", key);
 

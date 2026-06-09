@@ -1,8 +1,7 @@
-export const getMonthRange = (date: Date) => {
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
+export const getMonthRange = (period: string) => {
+  const [year, month] = period.split("-").map(Number);
   const start = new Date(year, month - 1, 1);
-  const end = new Date(year, month, 1);
+  const end = new Date(year, month, 0);
 
   return {
     startDate: start.toISOString().split("T")[0],
@@ -10,25 +9,30 @@ export const getMonthRange = (date: Date) => {
   };
 };
 
-export const getPreviousMonth = (date: Date) => {
-  const previousMonthDate = new Date(
-    date.getFullYear(),
-    date.getMonth() - 1,
-    1,
-  );
+export const getPreviousMonth = (period: string) => {
+  const [year, month] = period.split("-").map(Number);
+  const previousMonthDate = new Date(year, month - 2, 1);
 
-  return previousMonthDate;
+  const y = previousMonthDate.getFullYear();
+  const m = String(previousMonthDate.getMonth() + 1).padStart(2, "0");
+
+  return `${y}-${m}`;
 };
 
-export const getNextMonth = (date: Date) => {
-  const nextMonthDate = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+export const getNextMonth = (period: string) => {
+  const [year, month] = period.split("-").map(Number);
+  const nextMonthDate = new Date(year, month, 1);
 
-  return nextMonthDate;
+  const y = nextMonthDate.getFullYear();
+  const m = String(nextMonthDate.getMonth() + 1).padStart(2, "0");
+
+  return `${y}-${m}`;
 };
 
-export const getDateLast12Months = (date: Date) => {
-  const initialDate = new Date(date.getFullYear(), date.getMonth() - 11, 1);
-  const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+export const getDateLast12Months = (period: string) => {
+  const [year, month] = period.split("-").map(Number);
+  const initialDate = new Date(year, month - 12, 1);
+  const endDate = new Date(year, month, 0);
 
   return {
     startDate: initialDate.toISOString().split("T")[0],

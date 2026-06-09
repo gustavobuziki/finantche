@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { MoreHorizontalIcon, Search } from "lucide-react";
+import { MoreHorizontalIcon, Search, Trash } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
@@ -7,7 +7,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -43,13 +42,23 @@ import { useDebouncedValue } from "@/hooks/use-debounce";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 import type { Expenses } from "@/types/expenses";
+import { DrawerDeleteExpense } from "./drawer-delet";
+import { debounce, useQueryState } from "nuqs";
 
 interface Props {
   expenses: Expenses[] | undefined;
 }
 
 export function TableExpenses({ expenses }: Props) {
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useQueryState("search", {
+    defaultValue: "",
+    parse: (value) => value || "",
+    limitUrlUpdates: debounce(300),
+  });
+  const [openDeleteDrawer, setOpenDeleteDrawer] = useState({
+    open: false,
+    idExpense: "",
+  });
 
   const debouncedSearch = useDebouncedValue(searchValue, 300);
   const isMobile = useIsMobile();
@@ -154,15 +163,20 @@ export function TableExpenses({ expenses }: Props) {
                           className="size-8"
                         >
                           <MoreHorizontalIcon />
-                          <span className="sr-only">Open menu</span>
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                        <DropdownMenuItem>Duplicate</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem variant="destructive">
-                          Delete
+                      <DropdownMenuContent side="left">
+                        <DropdownMenuItem
+                          variant="destructive"
+                          onClick={() =>
+                            setOpenDeleteDrawer({
+                              open: true,
+                              idExpense: expense.id,
+                            })
+                          }
+                        >
+                          <Trash className="size-4" />
+                          Excluir
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -172,6 +186,14 @@ export function TableExpenses({ expenses }: Props) {
           </TableBody>
         </Table>
       </CardContent>
+
+      <DrawerDeleteExpense
+        open={openDeleteDrawer.open}
+        onOpenChange={(open) =>
+          setOpenDeleteDrawer({ ...openDeleteDrawer, open })
+        }
+        idExpense={openDeleteDrawer.idExpense}
+      />
     </Card>
   );
 }

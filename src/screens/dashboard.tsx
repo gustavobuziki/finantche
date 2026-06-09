@@ -6,17 +6,16 @@ import { Buckets } from "@/components/expenses/buckets";
 import { TableExpenses } from "@/components/expenses/table-expenses";
 
 import { getExpensesByMonth } from "@/services/expenses";
+import { usePeriod } from "@/hooks/use-period";
 
 import { QUERY_KEYS } from "@/constants/query-keys";
 
-import { useGlobalStore } from "@/store/global-store";
-
 export function Dashboard() {
-  const { dateSelected } = useGlobalStore();
+  const { period } = usePeriod();
 
   const { data: expenses } = useQuery({
-    queryFn: () => getExpensesByMonth(dateSelected),
-    queryKey: [QUERY_KEYS.EXPENSES, dateSelected],
+    queryFn: () => getExpensesByMonth(period),
+    queryKey: [QUERY_KEYS.EXPENSES, period],
   });
 
   return (

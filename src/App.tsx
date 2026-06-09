@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Toaster } from "sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { NuqsAdapter } from "nuqs/adapters/react";
 
 import { useIsMobile } from "./hooks/use-mobile";
 
@@ -19,14 +20,16 @@ function App() {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <AppRoutes />
-      <Toaster
-        theme="dark"
-        richColors
-        position={isMobile ? "top-center" : "bottom-right"}
-      />
-    </QueryClientProvider>
+    <NuqsAdapter>
+      <QueryClientProvider client={queryClient}>
+        <AppRoutes />
+        <Toaster
+          theme="dark"
+          richColors
+          position={isMobile ? "top-center" : "bottom-right"}
+        />
+      </QueryClientProvider>
+    </NuqsAdapter>
   );
 }
 

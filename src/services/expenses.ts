@@ -18,8 +18,8 @@ export const createExpense = async (values: ExpensesPayload) => {
   return data as Expenses;
 };
 
-export const getExpensesByMonth = async (date: Date) => {
-  const { startDate, endDate } = getMonthRange(date);
+export const getExpensesByMonth = async (period: string) => {
+  const { startDate, endDate } = getMonthRange(period);
 
   const { data, error } = await supabase
     .from("expenses")
@@ -32,8 +32,8 @@ export const getExpensesByMonth = async (date: Date) => {
   return data as Expenses[];
 };
 
-export const getExpensesTotalByMonth = async (date: Date) => {
-  const { startDate, endDate } = getMonthRange(date);
+export const getExpensesTotalByMonth = async (period: string) => {
+  const { startDate, endDate } = getMonthRange(period);
 
   const { data, error } = await supabase
     .from("expenses")
@@ -48,8 +48,8 @@ export const getExpensesTotalByMonth = async (date: Date) => {
   }, 0);
 };
 
-export const getBiggestExpenseByMonth = async (date: Date) => {
-  const { startDate, endDate } = getMonthRange(date);
+export const getBiggestExpenseByMonth = async (period: string) => {
+  const { startDate, endDate } = getMonthRange(period);
 
   const { data, error } = await supabase
     .from("expenses")
@@ -68,8 +68,8 @@ export const getBiggestExpenseByMonth = async (date: Date) => {
   return data as Expenses;
 };
 
-export const getLast12MonthsExpensesTotal = async (date: Date) => {
-  const { startDate, endDate } = getDateLast12Months(date);
+export const getLast12MonthsExpensesTotal = async (period: string) => {
+  const { startDate, endDate } = getDateLast12Months(period);
 
   const { data, error } = await supabase
     .from("expenses")
@@ -80,4 +80,10 @@ export const getLast12MonthsExpensesTotal = async (date: Date) => {
   if (error) throw error;
 
   return data as ExpensesChart[];
+};
+
+export const deleteExpense = async (id: string) => {
+  const { error } = await supabase.from("expenses").delete().eq("id", id);
+
+  if (error) throw error;
 };

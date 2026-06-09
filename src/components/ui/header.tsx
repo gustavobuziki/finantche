@@ -20,21 +20,21 @@ import { MONTHS, YEARS } from "@/constants/dates";
 import { Button } from "./button";
 import { Avatar, AvatarFallback } from "./avatar";
 
-import { useGlobalStore } from "@/store/global-store";
 import { ModalCategories } from "../categories/modal-create-category";
 import { postLogout } from "@/services/auth";
 import { useAuthStore } from "@/store/auth-store";
 
 import LogoDark from "@/assets/logo-dark-finantche.png";
 import LogoLight from "@/assets/logo-light-finantche.png";
+import { usePeriod } from "@/hooks/use-period";
 
 export function Header() {
   const { theme, systemTheme, setTheme } = useTheme();
   const darkMode =
     theme === "dark" || (theme === "system" && systemTheme === "dark");
-  const { dateSelected, changeSelectedDate } = useGlobalStore();
   const { session, setSession } = useAuthStore();
   const navigate = useNavigate();
+  const { year, month, setPeriod } = usePeriod();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,8 +42,8 @@ export function Header() {
     setTheme(darkMode ? "light" : "dark");
   };
 
-  const currentMonth = dateSelected.getMonth() + 1;
-  const currentYear = dateSelected.getFullYear();
+  const currentMonth = month;
+  const currentYear = year;
 
   const handleLogout = async () => {
     setIsLoading(true);
@@ -70,7 +70,7 @@ export function Header() {
         <Select
           value={currentMonth.toString()}
           onValueChange={(value) =>
-            changeSelectedDate(new Date(currentYear, Number(value) - 1, 1))
+            setPeriod(`${currentYear}-${String(value).padStart(2, "0")}`)
           }
         >
           <SelectTrigger className="w-32">
@@ -89,7 +89,9 @@ export function Header() {
         <Select
           value={currentYear.toString()}
           onValueChange={(value) =>
-            changeSelectedDate(new Date(Number(value), currentMonth - 1, 1))
+            setPeriod(
+              `${String(value).padStart(4, "0")}-${String(currentMonth).padStart(2, "0")}`,
+            )
           }
         >
           <SelectTrigger className="w-20">
