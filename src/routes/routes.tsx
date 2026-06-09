@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { Login } from "@/screens/login";
 import { Dashboard } from "@/screens/dashboard";
@@ -16,10 +16,12 @@ export const AppRoutes = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/confirm-account" element={<ConfirmAccount />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Route>
 
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<Dashboard />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
     </BrowserRouter>
