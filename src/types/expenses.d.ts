@@ -13,7 +13,7 @@ export type ExpensesPayload = {
   amount: number;
   date: string;
   category_id?: string;
-  is_recurring: boolean;
+  reccurence_id?: string;
 };
 
 export type Expenses = {

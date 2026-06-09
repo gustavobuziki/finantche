@@ -35,14 +35,21 @@ import { currencyFormatter } from "@/utils/currency";
 const chartConfig = {} satisfies ChartConfig;
 
 export function ChartAnnual() {
-  const { theme } = useTheme();
-  const darkMode = theme === "dark";
+  const { theme, systemTheme } = useTheme();
+  const darkMode =
+    theme === "dark" || (theme === "system" && systemTheme === "dark");
   const { dateSelected } = useGlobalStore();
 
   const { data: totalMonths } = useQuery({
     queryFn: () => getLast12MonthsExpensesTotal(dateSelected),
     queryKey: [QUERY_KEYS.LAST_12_MONTHS_EXPENSES_TOTAL, dateSelected],
   });
+
+  const getYearMonthKey = (dateString: string) => {
+    const [year, month] = dateString.split("-");
+
+    return `${year}-${month}`;
+  };
 
   const renderChartData = () => {
     const months = Array.from({ length: 12 }, (_, index) => {
@@ -52,6 +59,7 @@ export function ChartAnnual() {
         1,
       );
       const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+      console.log("Gerando mês para chave:", key);
 
       return {
         key,
@@ -64,8 +72,8 @@ export function ChartAnnual() {
     });
 
     totalMonths?.forEach((expense) => {
-      const date = new Date(expense.date);
-      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+      const key = getYearMonthKey(expense.date);
+      console.log("Processando despesa com data:", expense.date, "chave:", key);
 
       const month = months.find((item) => item.key === key);
 

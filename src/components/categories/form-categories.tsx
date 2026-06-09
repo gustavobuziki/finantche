@@ -65,10 +65,10 @@ export function FormCategories({ buttonClose }: Props) {
     }
   };
 
-  const handleDeleteCategory = (categoryId: string) => {
+  const handleDeleteCategory = async (categoryId: string) => {
     try {
-      deleteCategory(categoryId);
-      toast.success("Categoria deletada com sucesso!");
+      const category = await deleteCategory(categoryId);
+      toast.success(`Categoria ${category.name} deletada com sucesso!`);
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CATEGORIES] });
     } catch {
       toast.error("Erro ao deletar categoria.");
@@ -78,8 +78,12 @@ export function FormCategories({ buttonClose }: Props) {
   return (
     <Tabs defaultValue="form" className="w-full">
       <TabsList className="mx-auto">
-        <TabsTrigger value="form">Adicionar</TabsTrigger>
-        <TabsTrigger value="resultados">Resultados</TabsTrigger>
+        <TabsTrigger value="form" className="w-25">
+          Adicionar
+        </TabsTrigger>
+        <TabsTrigger value="resultados" className="w-25">
+          Resultados
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="form">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>

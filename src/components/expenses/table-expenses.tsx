@@ -83,7 +83,6 @@ export function TableExpenses({ expenses }: Props) {
 
   const formatExpenses = expenses?.map((expense) => ({
     ...expense,
-    date: new Intl.DateTimeFormat("pt-BR").format(new Date(expense.date)),
     amount: new Intl.NumberFormat("pt-BR", {
       style: "currency",
       currency: "BRL",
@@ -126,7 +125,6 @@ export function TableExpenses({ expenses }: Props) {
               <TableHead>Descrição</TableHead>
               <TableHead>Valor</TableHead>
               <TableHead>Categoria</TableHead>
-              <TableHead>Data</TableHead>
               <TableHead className="text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
@@ -147,7 +145,6 @@ export function TableExpenses({ expenses }: Props) {
                   <TableCell width="20%">
                     {renderCategory(expense.category_id)}
                   </TableCell>
-                  <TableCell width="10%">{expense.date}</TableCell>
                   <TableCell width="10%" className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
