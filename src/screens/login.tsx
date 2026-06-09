@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { motion } from "motion/react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 import { Card } from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
@@ -15,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { postLogin } from "@/services/auth";
 import { AuthError } from "@supabase/supabase-js";
+import { useAuthStore } from "@/store/auth-store";
 
 type FormData = {
   email: string;
@@ -34,14 +36,16 @@ export function Login() {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
 
     try {
       const { session } = await postLogin(data.email, data.password);
+      useAuthStore.getState().setSession(session);
       if (session) {
-        window.location.reload();
+        navigate("/");
       }
     } catch (error) {
       const authError = error as AuthError;
