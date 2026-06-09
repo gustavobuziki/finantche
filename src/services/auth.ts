@@ -12,6 +12,7 @@ export const postRegister = async (
       data: {
         name,
       },
+      emailRedirectTo: `${window.location.origin}/confirm-account`,
     },
   });
 
@@ -26,7 +27,7 @@ export const postLogin = async (email: string, password: string) => {
     password,
   });
 
-  if (error) throw error; 
+  if (error) throw error;
 
   return data;
 };

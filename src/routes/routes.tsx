@@ -6,6 +6,7 @@ import { Register } from "@/screens/register";
 
 import { PrivateRoute } from "./private-routes";
 import { PublicRoute } from "./public-routes";
+import { ConfirmAccount } from "@/screens/confirm-account";
 
 export const AppRoutes = () => {
   return (
@@ -14,6 +15,7 @@ export const AppRoutes = () => {
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/confirm-account" element={<ConfirmAccount />} />
         </Route>
 
         <Route element={<PrivateRoute />}>

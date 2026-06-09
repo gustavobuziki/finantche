@@ -1,6 +1,7 @@
 import { useTheme } from "next-themes";
 import { MoonIcon, SquareArrowRightExit, SunIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 import {
   Select,
@@ -19,19 +20,20 @@ import { MONTHS, YEARS } from "@/constants/dates";
 import { Button } from "./button";
 import { Avatar, AvatarFallback } from "./avatar";
 
-import LogoDark from "@/assets/logo-dark-finantche.png";
-import LogoLight from "@/assets/logo-light-finantche.png";
 import { useGlobalStore } from "@/store/global-store";
 import { ModalCategories } from "../categories/modal-create-category";
 import { postLogout } from "@/services/auth";
 import { useAuthStore } from "@/store/auth-store";
-import { useState } from "react";
+
+import LogoDark from "@/assets/logo-dark-finantche.png";
+import LogoLight from "@/assets/logo-light-finantche.png";
 
 export function Header() {
-  const { theme, setTheme } = useTheme();
-  const darkMode = theme === "dark";
+  const { theme, systemTheme, setTheme } = useTheme();
+  const darkMode =
+    theme === "dark" || (theme === "system" && systemTheme === "dark");
   const { dateSelected, changeSelectedDate } = useGlobalStore();
-  const { setSession } = useAuthStore();
+  const { session, setSession } = useAuthStore();
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -139,8 +141,10 @@ export function Header() {
           </Popover>
 
           <div className="flex flex-col gap-0">
-            <span className="text-sm font-medium">Gustavo Buziki</span>
-            <span className="text-xs text-gray-400">gbuziki@gmail.com</span>
+            <span className="text-sm font-medium">
+              {session.user.user_metadata.name}
+            </span>
+            <span className="text-xs text-gray-400">{session.user.email}</span>
           </div>
         </div>
       </div>

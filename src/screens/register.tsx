@@ -14,7 +14,6 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 
-import LogoDark from "@/assets/logo-dark-finantche.png";
 import { Button } from "@/components/ui/button";
 import { postRegister } from "@/services/auth";
 
@@ -68,110 +67,97 @@ export function Register() {
   };
 
   return (
-    <div className="flex w-full h-full items-center justify-evenly">
-      <div className="flex flex-col gap-2 items-center">
-        <img src={LogoDark} alt="Logo" width={350} />
-        <span className="text-gray-400 text-sm flex text-center">
-          Controle seus gastos mensais e <br /> tenha uma visão clara de suas
-          finanças.
-        </span>
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <motion.div layout className="w-full">
-          <Card className="px-6">
-            <div>
-              <h2 className="text-2xl font-semibold">Criar Conta</h2>
-              <span className="text-gray-400">
-                Insira suas informações para criar uma conta.
-              </span>
-            </div>
-            <div className="flex flex-col gap-4">
-              <Field data-invalid={false} className="w-md">
-                <FieldLabel htmlFor="name">Nome</FieldLabel>
-                <InputGroup>
-                  <InputGroupInput
-                    id="name"
-                    placeholder="Nome..."
-                    {...register("name", {
-                      required: "Nome é obrigatório",
-                    })}
-                    aria-invalid={!!errors.name}
-                  />
-                  <InputGroupAddon align="inline-start">
-                    <User className="text-muted-foreground" />
-                  </InputGroupAddon>
-                </InputGroup>
-                {errors.name && <FieldError>{errors.name.message}.</FieldError>}
-              </Field>
-              <Field data-invalid={false} className="w-md">
-                <FieldLabel htmlFor="email">E-mail</FieldLabel>
-                <InputGroup>
-                  <InputGroupInput
-                    id="email"
-                    placeholder="E-mail..."
-                    {...register("email")}
-                    aria-invalid={!!errors.email}
-                  />
-                  <InputGroupAddon align="inline-start">
-                    <Mail className="text-muted-foreground" />
-                  </InputGroupAddon>
-                </InputGroup>
-                {errors.email && (
-                  <FieldError>{errors.email.message}.</FieldError>
-                )}
-              </Field>
-              <Field data-invalid={false} className="w-md">
-                <FieldLabel htmlFor="password">Senha</FieldLabel>
-                <InputGroup>
-                  <InputGroupInput
-                    id="password"
-                    type="password"
-                    placeholder="Senha..."
-                    {...register("password")}
-                    aria-invalid={!!errors.password}
-                  />
-                  <InputGroupAddon align="inline-start">
-                    <Lock className="text-muted-foreground" />
-                  </InputGroupAddon>
-                </InputGroup>
-                {errors.password && (
-                  <FieldError>{errors.password.message}.</FieldError>
-                )}
-              </Field>
-              <Field data-invalid={false} className="w-md">
-                <FieldLabel htmlFor="confirmPassword">
-                  Confirmar Senha
-                </FieldLabel>
-                <InputGroup>
-                  <InputGroupInput
-                    id="confirmPassword"
-                    type="password"
-                    placeholder="Confirmar Senha..."
-                    {...register("confirmPassword")}
-                    aria-invalid={!!errors.confirmPassword}
-                  />
-                  <InputGroupAddon align="inline-start">
-                    <Lock className="text-muted-foreground" />
-                  </InputGroupAddon>
-                </InputGroup>
-                {errors.confirmPassword && (
-                  <FieldError>{errors.confirmPassword.message}.</FieldError>
-                )}
-              </Field>
-            </div>
-            <Button className="w-full mt-6" type="submit" isLoading={isLoading}>
-              Criar
-            </Button>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <motion.div layout className="w-full">
+        <Card className="px-6">
+          <div>
+            <h2 className="text-2xl font-semibold">Criar Conta</h2>
+            <span className="text-gray-400">
+              Insira suas informações para criar uma conta.
+            </span>
+          </div>
+          <div className="flex flex-col gap-4">
+            <Field data-invalid={false} className="w-md">
+              <FieldLabel htmlFor="name">Nome</FieldLabel>
+              <InputGroup>
+                <InputGroupInput
+                  id="name"
+                  placeholder="Nome..."
+                  {...register("name", {
+                    required: "Nome é obrigatório",
+                  })}
+                  aria-invalid={!!errors.name}
+                />
+                <InputGroupAddon align="inline-start">
+                  <User className="text-muted-foreground" />
+                </InputGroupAddon>
+              </InputGroup>
+              {errors.name && <FieldError>{errors.name.message}.</FieldError>}
+            </Field>
+            <Field data-invalid={false} className="w-md">
+              <FieldLabel htmlFor="email">E-mail</FieldLabel>
+              <InputGroup>
+                <InputGroupInput
+                  id="email"
+                  placeholder="E-mail..."
+                  {...register("email")}
+                  aria-invalid={!!errors.email}
+                />
+                <InputGroupAddon align="inline-start">
+                  <Mail className="text-muted-foreground" />
+                </InputGroupAddon>
+              </InputGroup>
+              {errors.email && <FieldError>{errors.email.message}.</FieldError>}
+            </Field>
+            <Field data-invalid={false} className="w-md">
+              <FieldLabel htmlFor="password">Senha</FieldLabel>
+              <InputGroup>
+                <InputGroupInput
+                  id="password"
+                  type="password"
+                  placeholder="Senha..."
+                  {...register("password")}
+                  aria-invalid={!!errors.password}
+                />
+                <InputGroupAddon align="inline-start">
+                  <Lock className="text-muted-foreground" />
+                </InputGroupAddon>
+              </InputGroup>
+              {errors.password && (
+                <FieldError>{errors.password.message}.</FieldError>
+              )}
+            </Field>
+            <Field data-invalid={false} className="w-md">
+              <FieldLabel htmlFor="confirmPassword">Confirmar Senha</FieldLabel>
+              <InputGroup>
+                <InputGroupInput
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="Confirmar Senha..."
+                  {...register("confirmPassword")}
+                  aria-invalid={!!errors.confirmPassword}
+                />
+                <InputGroupAddon align="inline-start">
+                  <Lock className="text-muted-foreground" />
+                </InputGroupAddon>
+              </InputGroup>
+              {errors.confirmPassword && (
+                <FieldError>{errors.confirmPassword.message}.</FieldError>
+              )}
+            </Field>
+          </div>
+          <Button className="w-full mt-6" type="submit" isLoading={isLoading}>
+            Criar
+          </Button>
 
-            <a
-              href="/login"
-              className="text-center text-gray-400 hover:underline cursor-pointer text-sm"
-            >
-              Já possui uma conta? Faça login
-            </a>
-          </Card>
-        </motion.div>
-      </form>
-    </div>
+          <a
+            href="/login"
+            className="text-center text-gray-400 hover:underline cursor-pointer text-sm"
+          >
+            Já possui uma conta? Faça login
+          </a>
+        </Card>
+      </motion.div>
+    </form>
   );
 }
