@@ -15,7 +15,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { postLogin } from "@/services/auth";
 import { AuthError } from "@supabase/supabase-js";
-import { useNavigate } from "react-router-dom";
 
 type FormData = {
   email: string;
@@ -33,7 +32,6 @@ export function Login() {
       password: "",
     },
   });
-  const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,8 +39,10 @@ export function Login() {
     setIsLoading(true);
 
     try {
-      await postLogin(data.email, data.password);
-      navigate("/");
+      const { session } = await postLogin(data.email, data.password);
+      if (session) {
+        window.location.reload();
+      }
     } catch (error) {
       const authError = error as AuthError;
 
