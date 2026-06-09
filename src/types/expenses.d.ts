@@ -3,7 +3,7 @@ export type FormDataExpenses = {
   amount: number;
   month: number;
   year: number;
-  category_id?: string;
+  category_id: string;
   is_recurring: boolean;
   recurrence_id?: string;
 };

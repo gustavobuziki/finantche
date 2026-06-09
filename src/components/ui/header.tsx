@@ -144,9 +144,11 @@ export function Header() {
 
           <div className="flex flex-col gap-0">
             <span className="text-sm font-medium">
-              {session.user.user_metadata.name}
+              {session?.user?.user_metadata?.name}
             </span>
-            <span className="text-xs text-gray-400">{session.user.email}</span>
+            <span className="text-xs text-gray-400">
+              {session?.user?.email}
+            </span>
           </div>
         </div>
       </div>
