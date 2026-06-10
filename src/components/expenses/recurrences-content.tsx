@@ -161,7 +161,7 @@ export function RecurrencesContent({ categories, invalidateQueries }: Props) {
           <span className="mt-2">Nenhuma despesa encontrada.</span>
         </div>
       ) : (
-        <div className="flex h-full flex-col min-h-0">
+        <div className="flex h-full flex-col min-h-0 px-4">
           <Field orientation="horizontal" className="flex gap-2.5">
             <Checkbox
               id="all-recurrences"

@@ -91,7 +91,7 @@ export function Buckets({ expenses }: Props) {
   return (
     <div className="flex flex-col h-full gap-3">
       <div className="flex h-full gap-3 items-center">
-        <Card className="w-sm bg-primary/30 border border-primary p-6 gap-2">
+        <Card className="w-full md:w-sm bg-primary/30 border border-primary p-6 gap-2">
           <div className="flex items-center gap-2">
             <BadgeDollarSign
               size={18}
@@ -101,26 +101,26 @@ export function Buckets({ expenses }: Props) {
               Total do mês
             </span>
           </div>
-          <span className="text-xl font-semibold">
+          <span className="text-lg md:text-xl font-semibold">
             {currencyFormatter(currentMonthTotal)}
           </span>
-          <span className="text-gray-400 dark:text-gray-400">
+          <span className="text-sm md:text-base text-gray-400 dark:text-gray-400 truncate">
             {expenses?.length || 0} despesas registradas
           </span>
         </Card>
-        <Card className="w-2xs border border-input p-6 gap-2">
+        <Card className="w-full md:w-2xs border border-input p-6 gap-2">
           <div className="flex items-center gap-2">
             <TrendingUp
               size={18}
               className="text-gray-500 dark:text-gray-300"
             />
-            <span className="text-gray-500 dark:text-gray-300 font-medium">
+            <span className="text-xs md:text-base text-gray-500 dark:text-gray-300 font-medium">
               vs mês anterior
             </span>
           </div>
           {getMonthComparison.type === "increase" && (
             <>
-              <span className="text-xl font-semibold text-red-400">
+              <span className="text-lg md:text-xl font-semibold text-red-400">
                 +{getMonthComparison.percentage.toFixed(2)}%
               </span>
               <span className="flex-1 text-red-400 truncate">{`${monthDifferenceIncrease} a mais que ${previousMonthLabel}`}</span>
@@ -145,7 +145,7 @@ export function Buckets({ expenses }: Props) {
         </Card>
       </div>
       <div className="flex gap-3 h-full items-center">
-        <Card className="w-2xs border border-input p-6 gap-2">
+        <Card className="w-full md:w-2xs border border-input p-6 gap-2">
           <div className="flex items-center gap-2">
             <BanknoteArrowUp
               size={18}
@@ -155,14 +155,14 @@ export function Buckets({ expenses }: Props) {
               Maior gasto
             </span>
           </div>
-          <span className="flex-1 text-xl font-semibold truncate">
+          <span className="flex-1 text-lg md:text-xl font-semibold truncate">
             {biggestExpense?.description || "Nenhuma despesa"}
           </span>
           <span className="text-gray-400">
             {currencyFormatter(biggestExpense?.amount || 0)}
           </span>
         </Card>
-        <Card className="w-sm bg-primary/30 border border-primary p-6 gap-2">
+        <Card className="w-full md:w-sm bg-primary/30 border border-primary p-6 gap-2">
           <div className="flex items-center gap-2">
             <CalendarFold
               size={18}
@@ -172,10 +172,10 @@ export function Buckets({ expenses }: Props) {
               Projeção {nextMonthLabel}
             </span>
           </div>
-          <span className="text-xl font-semibold">
+          <span className="text-lg md:text-xl font-semibold">
             {currencyFormatter(nextMonthTotal)}
           </span>
-          <span className="text-gray-400">
+          <span className="text-sm md:text-base text-gray-400 dark:text-gray-400 truncate">
             {expensesRecurrences?.length || 0} despesas recorrentes
           </span>
         </Card>

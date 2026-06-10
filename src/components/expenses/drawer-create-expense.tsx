@@ -29,7 +29,7 @@ export function DrawerCreateExpense() {
             terminar.
           </DrawerDescription>
         </DrawerHeader>
-        <div className="flex justify-center">
+        <div className="flex justify-center py-4">
           <FormExpenses
             buttonClose={
               <DrawerClose>
