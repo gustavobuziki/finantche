@@ -55,7 +55,7 @@ export function FormExpenses({ buttonClose }: Props) {
       <TabsContent value="add">
         <RecurrencesContent
           invalidateQueries={invalidateQueries}
-          categories={categories}
+          categories={categories || []}
         />
       </TabsContent>
     </Tabs>
