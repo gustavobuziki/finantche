@@ -168,7 +168,7 @@ export function Buckets({ expenses }: Props) {
               size={18}
               className="text-gray-500 dark:text-gray-300"
             />
-            <span className="text-xs md:text-base text-gray-500 dark:text-gray-300 font-medium">
+            <span className="text-xs md:text-base text-gray-500 dark:text-gray-300 font-medium truncate">
               Projeção {nextMonthLabel}
             </span>
           </div>
