@@ -4,19 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { MONTHS, YEARS } from "@/constants/dates";
+
 import { Button } from "./button";
 import { Avatar, AvatarFallback } from "./avatar";
 
@@ -26,8 +18,8 @@ import { useAuthStore } from "@/store/auth-store";
 
 import LogoDark from "@/assets/logo-dark-finantche.png";
 import LogoLight from "@/assets/logo-light-finantche.png";
-import { usePeriod } from "@/hooks/use-period";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { DateSelector } from "../expenses/date-selector";
 
 export function Header() {
   const { theme, systemTheme, setTheme } = useTheme();
@@ -35,7 +27,7 @@ export function Header() {
     theme === "dark" || (theme === "system" && systemTheme === "dark");
   const { session, setSession } = useAuthStore();
   const navigate = useNavigate();
-  const { year, month, setPeriod } = usePeriod();
+
   const isMobile = useIsMobile();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -43,9 +35,6 @@ export function Header() {
   const changeTheme = () => {
     setTheme(darkMode ? "light" : "dark");
   };
-
-  const currentMonth = month;
-  const currentYear = year;
 
   const handleLogout = async () => {
     setIsLoading(true);
@@ -67,53 +56,16 @@ export function Header() {
         width={180}
         height="auto"
       />
-      {!isMobile && (
-        <div className="flex gap-1 items-center ml-auto mr-2">
-          <Select
-            value={currentMonth.toString()}
-            onValueChange={(value) =>
-              setPeriod(`${currentYear}-${String(value).padStart(2, "0")}`)
-            }
-          >
-            <SelectTrigger className="w-32">
-              <SelectValue placeholder="Mês" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {MONTHS.map((month) => (
-                  <SelectItem key={month.value} value={month.value}>
-                    {month.label}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <Select
-            value={currentYear.toString()}
-            onValueChange={(value) =>
-              setPeriod(
-                `${String(value).padStart(4, "0")}-${String(currentMonth).padStart(2, "0")}`,
-              )
-            }
-          >
-            <SelectTrigger className="w-20">
-              <SelectValue placeholder="Ano" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {YEARS.map((year) => (
-                  <SelectItem key={year.value} value={year.value}>
-                    {year.label}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-      )}
+      <div className="ml-auto mr-2">
+        <DateSelector />
+      </div>
       <div className="flex items-center gap-2">
         <Button variant="ghost" onClick={changeTheme}>
-          {darkMode ? <SunIcon size={16} /> : <MoonIcon size={16} />}
+          {darkMode ? (
+            <SunIcon size={16} className="text-gray-600 dark:text-gray-200" />
+          ) : (
+            <MoonIcon size={16} className="text-gray-600 dark:text-gray-200" />
+          )}
         </Button>
         <div className="flex flex-row gap-2">
           <Popover>
@@ -147,13 +99,13 @@ export function Header() {
 
           {!isMobile && (
             <div className="flex flex-col gap-0">
-            <span className="text-sm font-medium">
-              {session?.user?.user_metadata?.name}
-            </span>
-            <span className="text-xs text-gray-400">
-              {session?.user?.email}
-            </span>
-          </div>
+              <span className="text-sm font-medium">
+                {session?.user?.user_metadata?.name}
+              </span>
+              <span className="text-xs text-gray-400">
+                {session?.user?.email}
+              </span>
+            </div>
           )}
         </div>
       </div>

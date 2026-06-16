@@ -96,7 +96,7 @@ export function ChartAnnual() {
   };
 
   return (
-    <Card className="flex-2 border border-input">
+    <Card className="border border-input">
       <CardHeader>
         <CardTitle>Resumo anual</CardTitle>
         <CardDescription>

@@ -137,7 +137,7 @@ export function Buckets({ expenses }: Props) {
           {getMonthComparison.type === "neutral" && (
             <>
               <span className="text-xl font-semibold text-gray-400">0%</span>
-              <span className="text-gray-400">
+              <span className="text-gray-400 truncate">
                 Os gastos permaneceram iguais
               </span>
             </>
@@ -168,7 +168,7 @@ export function Buckets({ expenses }: Props) {
               size={18}
               className="text-gray-500 dark:text-gray-300"
             />
-            <span className="text-gray-500 dark:text-gray-300 font-medium">
+            <span className="text-xs md:text-base text-gray-500 dark:text-gray-300 font-medium">
               Projeção {nextMonthLabel}
             </span>
           </div>

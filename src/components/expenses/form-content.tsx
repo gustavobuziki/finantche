@@ -31,6 +31,7 @@ import { createExpense } from "@/services/expenses";
 import { QUERY_KEYS } from "@/constants/query-keys";
 import { currencyFormatter } from "@/utils/currency";
 import type { Category } from "@/types/categories";
+import { usePeriod } from "@/hooks/use-period";
 
 interface Props {
   invalidateQueries: () => void;
@@ -43,18 +44,20 @@ export function FormContent({
   buttonClose,
   categories,
 }: Props) {
+  const { month, year } = usePeriod();
   const {
     register,
     handleSubmit,
     control,
-    reset,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm<FormDataExpenses>({
     defaultValues: {
       description: "",
       amount: 0,
-      month: new Date().getMonth() + 1,
-      year: new Date().getFullYear(),
+      month: month,
+      year: year,
       category_id: undefined,
       is_recurring: false,
     },
@@ -62,6 +65,8 @@ export function FormContent({
   const queryClient = useQueryClient();
 
   const [isLoading, setIsLoading] = useState(false);
+
+  console.log(getValues());
 
   const onsubmit = async (data: FormDataExpenses) => {
     setIsLoading(true);
@@ -98,7 +103,8 @@ export function FormContent({
     } finally {
       setIsLoading(false);
       invalidateQueries();
-      reset();
+      setValue("description", "");
+      setValue("amount", 0);
     }
   };
 

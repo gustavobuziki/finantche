@@ -108,11 +108,13 @@ export function TableExpenses({ expenses }: Props) {
 
   return (
     <Card className="border border-input">
-      <CardHeader>
-        <CardTitle>Listagem de Despesas</CardTitle>
-        <CardDescription>
-          Visualize todas as suas despesas registradas
-        </CardDescription>
+      <CardHeader className="flex flex-col gap-3 md:flex-row md:justify-between">
+        <div>
+          <CardTitle>Listagem de Despesas</CardTitle>
+          <CardDescription>
+            Visualize todas as suas despesas registradas
+          </CardDescription>
+        </div>
         <CardAction className="flex gap-2 items-center">
           <InputGroup className="h-8">
             <InputGroupAddon align="inline-start">
