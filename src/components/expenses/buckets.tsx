@@ -26,6 +26,8 @@ import { QUERY_KEYS } from "@/constants/query-keys";
 import { MONTHS } from "@/constants/dates";
 import { usePeriod } from "@/hooks/use-period";
 import { getRecurrences } from "@/services/recurrences";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { CarouselBuckets } from "./carousel-buckets";
 
 interface Props {
   expenses: Expenses[] | undefined;
@@ -33,6 +35,7 @@ interface Props {
 
 export function Buckets({ expenses }: Props) {
   const { period } = usePeriod();
+  const isMobile = useIsMobile();
 
   const { data: biggestExpense } = useQuery({
     queryKey: [QUERY_KEYS.BIGGEST_EXPENSE, period],
@@ -88,42 +91,44 @@ export function Buckets({ expenses }: Props) {
     getMonthComparison.previousTotal - getMonthComparison.currentTotal,
   );
 
-  return (
-    <div className="flex flex-col h-full gap-3">
-      <div className="flex h-full gap-3 items-center">
-        <Card className="w-full md:w-sm bg-primary/30 border border-primary p-6 gap-2">
+  return isMobile ? (
+    <CarouselBuckets />
+  ) : (
+    <div className="flex h-full flex-col gap-3">
+      <div className="flex h-full items-center gap-3">
+        <Card className="bg-primary/30 border-primary gap-2 border p-6">
           <div className="flex items-center gap-2">
             <BadgeDollarSign
               size={18}
               className="text-gray-500 dark:text-gray-300"
             />
-            <span className="text-gray-500 dark:text-gray-300 font-medium">
+            <span className="text-sm font-medium text-gray-500 dark:text-gray-300">
               Total do mês
             </span>
           </div>
-          <span className="text-lg md:text-xl font-semibold">
+          <span className="text-xl font-semibold">
             {currencyFormatter(currentMonthTotal)}
           </span>
-          <span className="text-sm md:text-base text-gray-400 dark:text-gray-400 truncate">
+          <span className="truncate text-sm text-gray-400 dark:text-gray-400">
             {expenses?.length || 0} despesas registradas
           </span>
         </Card>
-        <Card className="w-full md:w-2xs border border-input p-6 gap-2">
+        <Card className="border-input gap-2 border p-6">
           <div className="flex items-center gap-2">
             <TrendingUp
               size={18}
               className="text-gray-500 dark:text-gray-300"
             />
-            <span className="text-xs md:text-base text-gray-500 dark:text-gray-300 font-medium">
+            <span className="text-sm font-medium text-gray-500 dark:text-gray-300">
               vs mês anterior
             </span>
           </div>
           {getMonthComparison.type === "increase" && (
             <>
-              <span className="text-lg md:text-xl font-semibold text-red-400">
+              <span className="text-xl font-semibold text-red-400">
                 +{getMonthComparison.percentage.toFixed(2)}%
               </span>
-              <span className="flex-1 text-red-400 truncate">{`${monthDifferenceIncrease} a mais que ${previousMonthLabel}`}</span>
+              <span className="truncate text-sm text-red-400">{`${monthDifferenceIncrease} a mais que ${previousMonthLabel}`}</span>
             </>
           )}
           {getMonthComparison.type === "decrease" && (
@@ -131,51 +136,51 @@ export function Buckets({ expenses }: Props) {
               <span className="text-xl font-semibold text-green-500">
                 {getMonthComparison.percentage.toFixed(2)}%
               </span>
-              <span className="flex-1 text-green-500 truncate">{`${monthDifferenceDecrease} a menos que ${previousMonthLabel}`}</span>
+              <span className="truncate text-sm text-green-500">{`${monthDifferenceDecrease} a menos que ${previousMonthLabel}`}</span>
             </>
           )}
           {getMonthComparison.type === "neutral" && (
             <>
               <span className="text-xl font-semibold text-gray-400">0%</span>
-              <span className="text-gray-400 truncate">
+              <span className="truncate text-sm text-gray-400">
                 Os gastos permaneceram iguais
               </span>
             </>
           )}
         </Card>
       </div>
-      <div className="flex gap-3 h-full items-center">
-        <Card className="w-full md:w-2xs border border-input p-6 gap-2">
+      <div className="flex h-full items-center gap-3">
+        <Card className="border-input gap-2 border p-6">
           <div className="flex items-center gap-2">
             <BanknoteArrowUp
               size={18}
               className="text-gray-500 dark:text-gray-300"
             />
-            <span className="text-gray-500 dark:text-gray-300 font-medium">
+            <span className="text-sm font-medium text-gray-500 dark:text-gray-300">
               Maior gasto
             </span>
           </div>
-          <span className="flex-1 text-lg md:text-xl font-semibold truncate">
+          <span className="truncate text-xl font-semibold">
             {biggestExpense?.description || "Nenhuma despesa"}
           </span>
-          <span className="text-gray-400">
+          <span className="text-sm text-gray-400">
             {currencyFormatter(biggestExpense?.amount || 0)}
           </span>
         </Card>
-        <Card className="w-full md:w-sm bg-primary/30 border border-primary p-6 gap-2">
+        <Card className="bg-primary/30 border-primary gap-2 border p-6">
           <div className="flex items-center gap-2">
             <CalendarFold
               size={18}
               className="text-gray-500 dark:text-gray-300"
             />
-            <span className="text-xs md:text-base text-gray-500 dark:text-gray-300 font-medium truncate">
+            <span className="truncate text-sm font-medium text-gray-500 dark:text-gray-300">
               Projeção {nextMonthLabel}
             </span>
           </div>
-          <span className="text-lg md:text-xl font-semibold">
+          <span className="truncate text-xl font-semibold">
             {currencyFormatter(nextMonthTotal)}
           </span>
-          <span className="text-sm md:text-base text-gray-400 dark:text-gray-400 truncate">
+          <span className="flex-1 truncate text-sm text-gray-400 dark:text-gray-400">
             {expensesRecurrences?.length || 0} despesas recorrentes
           </span>
         </Card>

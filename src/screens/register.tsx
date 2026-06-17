@@ -71,7 +71,7 @@ export function Register() {
       <motion.div layout className="w-full">
         <Card className="px-6 sm:w-md">
           <div>
-            <h2 className="text-2xl font-semibold">Criar Conta</h2>
+            <h2 className="text-lg md:text-2xl font-semibold">Criar Conta</h2>
             <span className="text-gray-400">
               Insira suas informações para criar uma conta.
             </span>

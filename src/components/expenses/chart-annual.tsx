@@ -96,7 +96,7 @@ export function ChartAnnual() {
   };
 
   return (
-    <Card className="w-full border border-input">
+    <Card className="border-input w-full border">
       <CardHeader>
         <CardTitle>Resumo anual</CardTitle>
         <CardDescription>
@@ -111,7 +111,7 @@ export function ChartAnnual() {
                 size={18}
                 className="text-gray-500 dark:text-gray-300"
               />
-              <span className="text-gray-500 dark:text-gray-300 font-medium">
+              <span className="font-medium text-gray-500 dark:text-gray-300">
                 Média
               </span>
             </div>
@@ -123,7 +123,7 @@ export function ChartAnnual() {
           <div className="flex flex-col pt-4">
             <div className="flex items-center gap-2">
               <Goal size={18} className="text-gray-500 dark:text-gray-300" />
-              <span className="text-gray-500 dark:text-gray-300 font-medium">
+              <span className="font-medium text-gray-500 dark:text-gray-300">
                 Meta
               </span>
             </div>

@@ -23,7 +23,7 @@ export const PublicRoute = () => {
   }
 
   return (
-    <div className="w-full h-full bg-[url('./assets/background-image.png')] bg-cover flex flex-col items-center justify-center gap-8 px-4 lg:flex-row-reverse lg:justify-evenly">
+    <div className="w-full h-full bg-[url('./assets/background-image.png')] bg-cover flex flex-col items-center justify-center gap-8 pt-28 pb-8 px-4 overflow-y-auto lg:flex-row-reverse lg:justify-evenly">
       <img src={LogoDark} alt="Logo" width={isMobile ? 250 : 350} />
       <Outlet />
     </div>

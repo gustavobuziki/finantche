@@ -11,13 +11,15 @@ export function ConfirmAccount() {
     <motion.div layout>
       <Card className="px-6">
         <div>
-          <h2 className="text-2xl font-semibold">Confirmação de Conta</h2>
-          <span className="text-gray-400">
+          <h2 className="text-2xl font-semibold mb-2 text-center">
+            Confirmação de Conta
+          </h2>
+          <span className="text-gray-400 text-center flex justify-center">
             Sua conta ativada com sucesso. Faça login para acessar suas
             finanças.
           </span>
         </div>
-        <Button className="mt-6" onClick={() => navigate("/login")}>
+        <Button className="mt-4" onClick={() => navigate("/login")}>
           Ir para login
         </Button>
       </Card>

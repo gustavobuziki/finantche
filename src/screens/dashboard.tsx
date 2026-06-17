@@ -21,10 +21,10 @@ export function Dashboard() {
   });
 
   return (
-    <div className="flex flex-col w-full gap-6 p-6">
+    <div className="flex w-full flex-col gap-6 p-6">
       <Header />
-      <main className="flex flex-col gap-3 pb-6 -mt-3">
-        <div className="flex flex-col lg:flex-row gap-3">
+      <main className="-mt-3 flex flex-col gap-3 pb-6">
+        <div className="flex flex-col gap-3 lg:flex-row">
           <Buckets expenses={expenses} />
           {!isMobile && <ChartAnnual />}
         </div>
