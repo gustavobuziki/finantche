@@ -28,6 +28,8 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Activity } from "react";
 
 const chartConfig = {} satisfies ChartConfig;
 
@@ -36,6 +38,7 @@ export function ChartAnnual() {
   const darkMode =
     theme === "dark" || (theme === "system" && systemTheme === "dark");
   const { period, year, month } = usePeriod();
+  const isMobile = useIsMobile();
 
   const { data: totalMonths } = useQuery({
     queryFn: () => getLast12MonthsExpensesTotal(period),
@@ -102,7 +105,7 @@ export function ChartAnnual() {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex items-center px-6">
-        <div>
+        <Activity mode={isMobile ? "hidden" : "visible"}>
           <div className="flex flex-col border-b pb-4">
             <div className="flex items-center gap-2">
               <BadgeDollarSign
@@ -127,7 +130,7 @@ export function ChartAnnual() {
             </div>
             <span className="text-lg font-medium">Não definida</span>
           </div>
-        </div>
+        </Activity>
 
         <div className="flex-1 px-4">
           <ChartContainer config={chartConfig} className="h-39.5 w-full px-2">

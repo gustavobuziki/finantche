@@ -214,9 +214,9 @@ export function Buckets({ expenses }: Props) {
       </CarouselContent>
     </Carousel>
   ) : (
-    <div className="flex h-full flex-col gap-3">
+    <div className="flex flex-col gap-3">
       <div className="flex h-full items-center gap-3">
-        <Card className="bg-primary/30 border-primary w-full gap-2 border p-6">
+        <Card className="bg-primary/30 border-primary w-sm gap-2 border p-6">
           <div className="flex items-center gap-2">
             <BadgeDollarSign
               size={18}
@@ -233,7 +233,7 @@ export function Buckets({ expenses }: Props) {
             {expenses?.length || 0} despesas registradas
           </span>
         </Card>
-        <Card className="border-input gap-2 border p-6">
+        <Card className="border-input w-xs gap-2 border p-6">
           <div className="flex items-center gap-2">
             <TrendingUp
               size={18}
@@ -269,8 +269,8 @@ export function Buckets({ expenses }: Props) {
           )}
         </Card>
       </div>
-      <div className="flex h-full items-center gap-3">
-        <Card className="border-input gap-2 border p-6">
+      <div className="flex items-center gap-3">
+        <Card className="border-input w-xs gap-2 border p-6">
           <div className="flex items-center gap-2">
             <BanknoteArrowUp
               size={18}
@@ -287,7 +287,7 @@ export function Buckets({ expenses }: Props) {
             {currencyFormatter(biggestExpense?.amount || 0)}
           </span>
         </Card>
-        <Card className="bg-primary/30 border-primary gap-2 border p-6">
+        <Card className="bg-primary/30 border-primary w-sm gap-2 border p-6">
           <div className="flex items-center gap-2">
             <CalendarFold
               size={18}

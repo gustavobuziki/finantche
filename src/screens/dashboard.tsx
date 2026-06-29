@@ -21,9 +21,9 @@ export function Dashboard() {
   return (
     <div className="flex w-full flex-col gap-3 p-6">
       <Header />
-      <div className="flex flex-col gap-3 lg:flex-row">
+      <div className="flex flex-col gap-3 xl:flex-row">
         <Buckets expenses={expenses} />
-        {/* <ChartAnnual /> */}
+        <ChartAnnual />
       </div>
       {/* <TableExpenses expenses={expenses} /> */}
     </div>
