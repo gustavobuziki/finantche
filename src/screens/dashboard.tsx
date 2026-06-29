@@ -19,15 +19,13 @@ export function Dashboard() {
   });
 
   return (
-    <div className="flex w-full flex-col gap-6 p-6">
+    <div className="flex w-full flex-col gap-3 p-6">
       <Header />
-      <main className="-mt-3 flex flex-col gap-3 pb-6">
-        <div className="flex flex-col gap-3 lg:flex-row">
-          <Buckets expenses={expenses} />
-          {!isMobile && <ChartAnnual />}
-        </div>
-        <TableExpenses expenses={expenses} />
-      </main>
+      <div className="flex flex-col gap-3 lg:flex-row">
+        <Buckets expenses={expenses} />
+        {/* <ChartAnnual /> */}
+      </div>
+      {/* <TableExpenses expenses={expenses} /> */}
     </div>
   );
 }

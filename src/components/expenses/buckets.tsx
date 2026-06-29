@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import Autoplay from "embla-carousel-autoplay";
 import {
   BadgeDollarSign,
   BanknoteArrowUp,
@@ -6,6 +7,11 @@ import {
   TrendingUp,
 } from "lucide-react";
 
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 import { MONTHS } from "@/constants/dates";
 import { QUERY_KEYS } from "@/constants/query-keys";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -23,8 +29,7 @@ import {
 } from "@/utils/currency";
 import { getNextMonth, getPreviousMonth } from "@/utils/date";
 
-import { Card } from "../ui/card";
-import { CarouselBuckets } from "./carousel-buckets";
+import { Card, CardContent } from "../ui/card";
 
 interface Props {
   expenses: Expenses[] | undefined;
@@ -89,11 +94,129 @@ export function Buckets({ expenses }: Props) {
   );
 
   return isMobile ? (
-    <CarouselBuckets />
+    <Carousel
+      className="w-full"
+      opts={{
+        align: "center",
+        loop: true,
+      }}
+      plugins={[
+        Autoplay({
+          delay: 5000,
+        }),
+      ]}
+    >
+      <CarouselContent>
+        <CarouselItem className="basis-[85%]">
+          <CardContent className="p-0">
+            <Card className="bg-primary/30 border-primary gap-2 border p-6">
+              <div className="flex items-center gap-2">
+                <BadgeDollarSign
+                  size={18}
+                  className="text-gray-500 dark:text-gray-300"
+                />
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-300">
+                  Total do mês
+                </span>
+              </div>
+              <span className="text-xl font-semibold">
+                {currencyFormatter(currentMonthTotal)}
+              </span>
+              <span className="truncate text-sm text-gray-400 dark:text-gray-400">
+                {expenses?.length || 0} despesas registradas
+              </span>
+            </Card>
+          </CardContent>
+        </CarouselItem>
+        <CarouselItem className="basis-[85%]">
+          <CardContent className="p-0">
+            <Card className="border-input gap-2 border p-6">
+              <div className="flex items-center gap-2">
+                <TrendingUp
+                  size={18}
+                  className="text-gray-500 dark:text-gray-300"
+                />
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-300">
+                  vs mês anterior
+                </span>
+              </div>
+              {getMonthComparison.type === "increase" && (
+                <>
+                  <span className="text-xl font-semibold text-red-400">
+                    +{getMonthComparison.percentage.toFixed(2)}%
+                  </span>
+                  <span className="truncate text-sm text-red-400">{`${monthDifferenceIncrease} a mais que ${previousMonthLabel}`}</span>
+                </>
+              )}
+              {getMonthComparison.type === "decrease" && (
+                <>
+                  <span className="text-xl font-semibold text-green-500">
+                    {getMonthComparison.percentage.toFixed(2)}%
+                  </span>
+                  <span className="truncate text-sm text-green-500">{`${monthDifferenceDecrease} a menos que ${previousMonthLabel}`}</span>
+                </>
+              )}
+              {getMonthComparison.type === "neutral" && (
+                <>
+                  <span className="text-xl font-semibold text-gray-400">
+                    0%
+                  </span>
+                  <span className="truncate text-sm text-gray-400">
+                    Os gastos permaneceram iguais
+                  </span>
+                </>
+              )}
+            </Card>
+          </CardContent>
+        </CarouselItem>
+        <CarouselItem className="basis-[85%]">
+          <CardContent className="p-0">
+            <Card className="border-input gap-2 border p-6">
+              <div className="flex items-center gap-2">
+                <BanknoteArrowUp
+                  size={18}
+                  className="text-gray-500 dark:text-gray-300"
+                />
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-300">
+                  Maior gasto
+                </span>
+              </div>
+              <span className="truncate text-xl font-semibold">
+                {biggestExpense?.description || "Nenhuma despesa"}
+              </span>
+              <span className="text-sm text-gray-400">
+                {currencyFormatter(biggestExpense?.amount || 0)}
+              </span>
+            </Card>
+          </CardContent>
+        </CarouselItem>
+        <CarouselItem className="basis-[85%]">
+          <CardContent className="p-0">
+            <Card className="bg-primary/30 border-primary gap-2 border p-6">
+              <div className="flex items-center gap-2">
+                <CalendarFold
+                  size={18}
+                  className="text-gray-500 dark:text-gray-300"
+                />
+                <span className="truncate text-sm font-medium text-gray-500 dark:text-gray-300">
+                  Projeção {nextMonthLabel}
+                </span>
+              </div>
+              <span className="truncate text-xl font-semibold">
+                {currencyFormatter(nextMonthTotal)}
+              </span>
+              <span className="flex-1 truncate text-sm text-gray-400 dark:text-gray-400">
+                {expensesRecurrences?.length || 0} despesas recorrentes
+              </span>
+            </Card>
+          </CardContent>
+        </CarouselItem>
+      </CarouselContent>
+    </Carousel>
   ) : (
     <div className="flex h-full flex-col gap-3">
       <div className="flex h-full items-center gap-3">
-        <Card className="bg-primary/30 border-primary gap-2 border p-6">
+        <Card className="bg-primary/30 border-primary w-full gap-2 border p-6">
           <div className="flex items-center gap-2">
             <BadgeDollarSign
               size={18}
