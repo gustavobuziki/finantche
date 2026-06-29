@@ -1,14 +1,13 @@
-import { useEffect } from "react";
-import { Toaster } from "sonner";
+import "./App.css";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NuqsAdapter } from "nuqs/adapters/react";
+import { useEffect } from "react";
+import { Toaster } from "sonner";
 
 import { useIsMobile } from "./hooks/use-mobile";
-
 import { AppRoutes } from "./routes/routes";
 import { useAuthStore } from "./store/auth-store";
-
-import "./App.css";
 
 function App() {
   const queryClient = new QueryClient();

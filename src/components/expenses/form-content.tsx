@@ -1,17 +1,27 @@
-import { motion } from "motion/react";
-import { DollarSign, Text } from "lucide-react";
-import { Controller, useForm } from "react-hook-form";
 import { useQueryClient } from "@tanstack/react-query";
+import { DollarSign, Text } from "lucide-react";
+import { motion } from "motion/react";
+import { type ReactNode,useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useState, type ReactNode } from "react";
 
+import { MONTHS, YEARS } from "@/constants/dates";
+import { QUERY_KEYS } from "@/constants/query-keys";
+import { usePeriod } from "@/hooks/use-period";
+import { createExpense } from "@/services/expenses";
+import { createRecurrence } from "@/services/recurrences";
+import type { Category } from "@/types/categories";
+import type { ExpensesPayload, FormDataExpenses } from "@/types/expenses";
+import type { RecurrencePayload } from "@/types/recurrences";
+import { currencyFormatter } from "@/utils/currency";
+
+import { Button } from "../ui/button";
 import { Field, FieldError, FieldLabel } from "../ui/field";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
 } from "../ui/input-group";
-
 import {
   Select,
   SelectContent,
@@ -20,18 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Button } from "../ui/button";
 import { Switch } from "../ui/switch";
-
-import type { ExpensesPayload, FormDataExpenses } from "@/types/expenses";
-import type { RecurrencePayload } from "@/types/recurrences";
-import { createRecurrence } from "@/services/recurrences";
-import { MONTHS, YEARS } from "@/constants/dates";
-import { createExpense } from "@/services/expenses";
-import { QUERY_KEYS } from "@/constants/query-keys";
-import { currencyFormatter } from "@/utils/currency";
-import type { Category } from "@/types/categories";
-import { usePeriod } from "@/hooks/use-period";
 
 interface Props {
   invalidateQueries: () => void;

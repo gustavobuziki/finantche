@@ -1,3 +1,10 @@
+import { CalendarDays } from "lucide-react";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -6,16 +13,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-
 import { MONTHS, YEARS } from "@/constants/dates";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { usePeriod } from "@/hooks/use-period";
-import { CalendarDays } from "lucide-react";
 
 export function DateSelector() {
   const isMobile = useIsMobile();

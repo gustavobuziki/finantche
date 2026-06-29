@@ -1,25 +1,23 @@
-import { useTheme } from "next-themes";
 import { MoonIcon, SquareArrowRightExit, SunIcon } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useTheme } from "next-themes";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
+import LogoDark from "@/assets/logo-dark-finantche.png";
+import LogoLight from "@/assets/logo-light-finantche.png";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
-import { Button } from "./button";
-import { Avatar, AvatarFallback } from "./avatar";
-
-import { ModalCategories } from "../categories/modal-create-category";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { postLogout } from "@/services/auth";
 import { useAuthStore } from "@/store/auth-store";
 
-import LogoDark from "@/assets/logo-dark-finantche.png";
-import LogoLight from "@/assets/logo-light-finantche.png";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { ModalCategories } from "../categories/modal-create-category";
 import { DateSelector } from "../expenses/date-selector";
+import { Avatar, AvatarFallback } from "./avatar";
+import { Button } from "./button";
 
 export function Header() {
   const { theme, systemTheme, setTheme } = useTheme();

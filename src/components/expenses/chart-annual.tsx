@@ -1,21 +1,26 @@
+import { useQuery } from "@tanstack/react-query";
+import { BadgeDollarSign, Goal } from "lucide-react";
+import { useTheme } from "next-themes";
 import {
   Bar,
   BarChart,
   CartesianGrid,
-  XAxis,
   Cell,
   ReferenceLine,
+  XAxis,
 } from "recharts";
-import { BadgeDollarSign, Goal } from "lucide-react";
-import { useTheme } from "next-themes";
-import { useQuery } from "@tanstack/react-query";
 
 import {
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@/components/ui/chart";
+import { QUERY_KEYS } from "@/constants/query-keys";
+import { usePeriod } from "@/hooks/use-period";
+import { getLast12MonthsExpensesTotal } from "@/services/expenses";
+import { currencyFormatter } from "@/utils/currency";
+
 import {
   Card,
   CardContent,
@@ -23,13 +28,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-
-import { getLast12MonthsExpensesTotal } from "@/services/expenses";
-
-import { QUERY_KEYS } from "@/constants/query-keys";
-
-import { currencyFormatter } from "@/utils/currency";
-import { usePeriod } from "@/hooks/use-period";
 
 const chartConfig = {} satisfies ChartConfig;
 

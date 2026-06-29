@@ -1,10 +1,9 @@
 import { LoaderCircle } from "lucide-react";
 import { Navigate, Outlet } from "react-router-dom";
 
-import { useAuthStore } from "@/store/auth-store";
-
 import LogoDark from "@/assets/logo-dark-finantche.png";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useAuthStore } from "@/store/auth-store";
 
 export const PublicRoute = () => {
   const { session, isLoadingAuth } = useAuthStore();

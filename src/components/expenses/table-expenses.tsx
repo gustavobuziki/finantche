@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
-import { MoreHorizontalIcon, Search, Trash } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { MoreHorizontalIcon, Search, Trash } from "lucide-react";
+import { debounce, useQueryState } from "nuqs";
+import { useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +18,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { QUERY_KEYS } from "@/constants/query-keys";
+import { useDebouncedValue } from "@/hooks/use-debounce";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { getCategories } from "@/services/categories";
+import type { Expenses } from "@/types/expenses";
+
 import { Badge } from "../ui/badge";
 import {
   Card,
@@ -32,18 +39,8 @@ import {
   InputGroupInput,
 } from "../ui/input-group";
 import { DrawerCreateExpense } from "./drawer-create-expense";
-import { ModalCreateExpense } from "./modal-create-expense";
-
-import { QUERY_KEYS } from "@/constants/query-keys";
-
-import { getCategories } from "@/services/categories";
-
-import { useDebouncedValue } from "@/hooks/use-debounce";
-import { useIsMobile } from "@/hooks/use-mobile";
-
-import type { Expenses } from "@/types/expenses";
 import { DrawerDeleteExpense } from "./drawer-delet";
-import { debounce, useQueryState } from "nuqs";
+import { ModalCreateExpense } from "./modal-create-expense";
 
 interface Props {
   expenses: Expenses[] | undefined;

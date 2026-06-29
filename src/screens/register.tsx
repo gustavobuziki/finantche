@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { Lock, Mail, User } from "lucide-react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Lock, Mail, User } from "lucide-react";
 import { motion } from "motion/react";
-import { z } from "zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
 
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import {
@@ -13,8 +14,6 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-
-import { Button } from "@/components/ui/button";
 import { postRegister } from "@/services/auth";
 
 type FormData = {

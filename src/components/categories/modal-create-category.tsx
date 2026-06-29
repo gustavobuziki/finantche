@@ -1,3 +1,5 @@
+import { ClipboardList } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,7 +11,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { ClipboardList } from "lucide-react";
 import { FormCategories } from "./form-categories";
 
 export function ModalCategories() {

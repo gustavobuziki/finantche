@@ -1,3 +1,5 @@
+import { ListPlus } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,7 +11,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { ListPlus } from "lucide-react";
 import { FormExpenses } from "./form-expenses";
 
 export function ModalCreateExpense() {

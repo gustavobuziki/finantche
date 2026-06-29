@@ -1,8 +1,8 @@
-import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 export function ConfirmAccount() {
   const navigate = useNavigate();
@@ -11,10 +11,10 @@ export function ConfirmAccount() {
     <motion.div layout>
       <Card className="px-6">
         <div>
-          <h2 className="text-2xl font-semibold mb-2 text-center">
+          <h2 className="mb-2 text-center text-2xl font-semibold">
             Confirmação de Conta
           </h2>
-          <span className="text-gray-400 text-center flex justify-center">
+          <span className="flex justify-center text-center text-gray-400">
             Sua conta ativada com sucesso. Faça login para acessar suas
             finanças.
           </span>

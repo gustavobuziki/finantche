@@ -1,4 +1,5 @@
 import Autoplay from "embla-carousel-autoplay";
+
 import {
   Carousel,
   CarouselContent,
@@ -6,6 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+
 import { Card, CardContent } from "../ui/card";
 
 export function CarouselBuckets() {

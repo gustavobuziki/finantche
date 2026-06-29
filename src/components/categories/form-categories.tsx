@@ -1,28 +1,25 @@
-import { useState, type ReactNode } from "react";
-import { toast } from "sonner";
-import { useForm } from "react-hook-form";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FolderOpen, PaintBucket, TextIcon, Trash } from "lucide-react";
 import { motion } from "motion/react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { type ReactNode,useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
+import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
+import { QUERY_KEYS } from "@/constants/query-keys";
 import {
   createCategory,
   deleteCategory,
   getCategories,
 } from "@/services/categories";
-
 import type { FormDataCategory } from "@/types/categories";
-
-import { QUERY_KEYS } from "@/constants/query-keys";
 
 interface Props {
   buttonClose?: ReactNode;

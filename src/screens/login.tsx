@@ -1,10 +1,12 @@
+import { AuthError } from "@supabase/supabase-js";
 import { Lock, Mail } from "lucide-react";
-import { useForm } from "react-hook-form";
 import { motion } from "motion/react";
 import { useState } from "react";
-import { toast } from "sonner";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import {
@@ -12,10 +14,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-
-import { Button } from "@/components/ui/button";
 import { postLogin } from "@/services/auth";
-import { AuthError } from "@supabase/supabase-js";
 import { useAuthStore } from "@/store/auth-store";
 
 type FormData = {

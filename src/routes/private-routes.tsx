@@ -1,6 +1,7 @@
-import { useAuthStore } from "@/store/auth-store";
 import { LoaderCircle } from "lucide-react";
 import { Navigate, Outlet } from "react-router-dom";
+
+import { useAuthStore } from "@/store/auth-store";
 
 export const PrivateRoute = () => {
   const { session, isLoadingAuth } = useAuthStore();

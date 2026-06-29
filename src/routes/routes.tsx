@@ -1,12 +1,12 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
-import { Login } from "@/screens/login";
+import { ConfirmAccount } from "@/screens/confirm-account";
 import { Dashboard } from "@/screens/dashboard";
+import { Login } from "@/screens/login";
 import { Register } from "@/screens/register";
 
 import { PrivateRoute } from "./private-routes";
 import { PublicRoute } from "./public-routes";
-import { ConfirmAccount } from "@/screens/confirm-account";
 
 export const AppRoutes = () => {
   return (

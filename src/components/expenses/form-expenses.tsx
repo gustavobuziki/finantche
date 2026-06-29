@@ -1,8 +1,7 @@
-import type { ReactNode } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import type { ReactNode } from "react";
 
 import { QUERY_KEYS } from "@/constants/query-keys";
-
 import { getCategories } from "@/services/categories";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";

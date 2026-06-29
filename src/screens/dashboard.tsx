@@ -1,15 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { Header } from "@/components/ui/header";
 import { Buckets } from "@/components/expenses/buckets";
+import { ChartAnnual } from "@/components/expenses/chart-annual";
 import { TableExpenses } from "@/components/expenses/table-expenses";
-
-import { getExpensesByMonth } from "@/services/expenses";
-import { usePeriod } from "@/hooks/use-period";
-
+import { Header } from "@/components/ui/header";
 import { QUERY_KEYS } from "@/constants/query-keys";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { ChartAnnual } from "@/components/expenses/chart-annual";
+import { usePeriod } from "@/hooks/use-period";
+import { getExpensesByMonth } from "@/services/expenses";
 
 export function Dashboard() {
   const { period } = usePeriod();

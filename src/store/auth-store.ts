@@ -1,6 +1,7 @@
-import { supabase } from "@/utils/supabase";
 import type { Session } from "@supabase/supabase-js";
 import { create } from "zustand";
+
+import { supabase } from "@/utils/supabase";
 
 type AuthStore = {
   session: Session | null;

@@ -1,18 +1,20 @@
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { FolderOpen } from "lucide-react";
 import { motion } from "motion/react";
-
-import { QUERY_KEYS } from "@/constants/query-keys";
-import { getRecurrences } from "@/services/recurrences";
-import { Field, FieldContent, FieldLabel } from "../ui/field";
-import { Checkbox } from "../ui/checkbox";
-import { Separator } from "../ui/separator";
-import { Badge } from "../ui/badge";
-import type { Category } from "@/types/categories";
+import { useState } from "react";
 import { toast } from "sonner";
+
+import { MONTHS, YEARS } from "@/constants/dates";
+import { QUERY_KEYS } from "@/constants/query-keys";
 import { createExpense } from "@/services/expenses";
+import { getRecurrences } from "@/services/recurrences";
+import type { Category } from "@/types/categories";
 import { currencyFormatter } from "@/utils/currency";
+
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
+import { Field, FieldContent, FieldLabel } from "../ui/field";
 import {
   Select,
   SelectContent,
@@ -21,8 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { MONTHS, YEARS } from "@/constants/dates";
-import { Button } from "../ui/button";
+import { Separator } from "../ui/separator";
 
 interface Props {
   categories: Category[];

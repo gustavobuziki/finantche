@@ -1,15 +1,21 @@
+import { useQuery } from "@tanstack/react-query";
 import {
   BadgeDollarSign,
   BanknoteArrowUp,
   CalendarFold,
   TrendingUp,
 } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
 
-import { Card } from "../ui/card";
-
+import { MONTHS } from "@/constants/dates";
+import { QUERY_KEYS } from "@/constants/query-keys";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { usePeriod } from "@/hooks/use-period";
+import {
+  getBiggestExpenseByMonth,
+  getExpensesTotalByMonth,
+} from "@/services/expenses";
+import { getRecurrences } from "@/services/recurrences";
 import type { Expenses } from "@/types/expenses";
-
 import {
   currencyFormatter,
   getExpensesRecurrencesTotal,
@@ -17,16 +23,7 @@ import {
 } from "@/utils/currency";
 import { getNextMonth, getPreviousMonth } from "@/utils/date";
 
-import {
-  getBiggestExpenseByMonth,
-  getExpensesTotalByMonth,
-} from "@/services/expenses";
-
-import { QUERY_KEYS } from "@/constants/query-keys";
-import { MONTHS } from "@/constants/dates";
-import { usePeriod } from "@/hooks/use-period";
-import { getRecurrences } from "@/services/recurrences";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { Card } from "../ui/card";
 import { CarouselBuckets } from "./carousel-buckets";
 
 interface Props {
